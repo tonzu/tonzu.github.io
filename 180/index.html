@@ -1,16 +1,188 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>My Portfolio</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-    </style>
-</head>
-<body>
-    <h1>Welcome to My CS180 Portfolio!</h1>
-    <a href="./1/index.html">Project 1</a>
-</body>
-</html>
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { createPageUrl } from '@/utils';
+import { ExternalLink, Camera, Image, Zap } from 'lucide-react';
+
+export default function Home() {
+  const projects = [
+    {
+      id: 'proj0',
+      title: 'Project 0: Becoming Friends with Your Camera',
+      description: 'Exploring perspective, focal length, and center of projection through selfies, architectural photography, and the dolly zoom effect.',
+      status: 'completed',
+      techniques: ['Portrait Photography', 'Perspective Compression', 'Dolly Zoom'],
+      icon: Camera
+    },
+    {
+      id: 'proj1',
+      title: 'Project 1: TBD',
+      description: 'Project details coming soon...',
+      status: 'upcoming',
+      techniques: ['TBD'],
+      icon: Image
+    },
+    {
+      id: 'proj2',
+      title: 'Project 2: TBD',
+      description: 'Project details coming soon...',
+      status: 'upcoming',
+      techniques: ['TBD'],
+      icon: Zap
+    },
+    {
+      id: 'proj3',
+      title: 'Project 3: TBD',
+      description: 'Project details coming soon...',
+      status: 'upcoming',
+      techniques: ['TBD'],
+      icon: Camera
+    },
+    {
+      id: 'proj4',
+      title: 'Project 4: TBD',
+      description: 'Project details coming soon...',
+      status: 'upcoming',
+      techniques: ['TBD'],
+      icon: Image
+    },
+    {
+      id: 'proj5',
+      title: 'Project 5: TBD',
+      description: 'Project details coming soon...',
+      status: 'upcoming',
+      techniques: ['TBD'],
+      icon: Zap
+    }
+  ];
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <header className="bg-white border-b border-gray-200">
+        <div className="max-w-4xl mx-auto px-6 py-8">
+          <div className="flex items-center gap-4">
+            <div className="w-16 h-16 bg-blue-600 rounded-lg flex items-center justify-center">
+              <Camera className="w-8 h-8 text-white" />
+            </div>
+            <div>
+              <h1 className="text-3xl font-light text-gray-900 mb-1">
+                CS180 Portfolio
+              </h1>
+              <p className="text-gray-600 text-lg">
+                Intro to Computer Vision and Computational Photography
+              </p>
+              <div className="flex items-center gap-2 mt-2">
+                <span className="text-sm text-gray-500">UC Berkeley • Fall 2024</span>
+                <a 
+                  href="https://tonzu.github.io/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-700 transition-colors"
+                >
+                  tonzu.github.io <ExternalLink className="w-3 h-3" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="max-w-4xl mx-auto px-6 py-12">
+        <div className="mb-12">
+          <h2 className="text-2xl font-light text-gray-900 mb-4">
+            Projects
+          </h2>
+          <p className="text-gray-600 max-w-2xl leading-relaxed">
+            This portfolio showcases my journey through computational photography and computer vision, 
+            exploring the intersection of mathematics, optics, and creative expression.
+          </p>
+        </div>
+
+        {/* Projects Grid */}
+        <div className="grid gap-8">
+          {projects.map((project) => {
+            const IconComponent = project.icon;
+            const isCompleted = project.status === 'completed';
+            
+            return (
+              <div 
+                key={project.id}
+                className={`bg-white rounded-lg border transition-all duration-200 ${
+                  isCompleted 
+                    ? 'border-gray-200 hover:border-blue-300 hover:shadow-lg shadow-sm' 
+                    : 'border-gray-100 opacity-75'
+                }`}
+              >
+                <div className="p-8">
+                  <div className="flex items-start gap-6">
+                    <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${
+                      isCompleted ? 'bg-blue-100' : 'bg-gray-100'
+                    }`}>
+                      <IconComponent className={`w-6 h-6 ${
+                        isCompleted ? 'text-blue-600' : 'text-gray-400'
+                      }`} />
+                    </div>
+                    
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-3">
+                        <h3 className="text-xl font-medium text-gray-900">
+                          {project.title}
+                        </h3>
+                        {isCompleted && (
+                          <span className="px-3 py-1 text-xs font-medium bg-green-100 text-green-700 rounded-full">
+                            Completed
+                          </span>
+                        )}
+                        {!isCompleted && (
+                          <span className="px-3 py-1 text-xs font-medium bg-gray-100 text-gray-500 rounded-full">
+                            Coming Soon
+                          </span>
+                        )}
+                      </div>
+                      
+                      <p className="text-gray-600 leading-relaxed mb-4">
+                        {project.description}
+                      </p>
+                      
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {project.techniques.map((technique) => (
+                          <span 
+                            key={technique}
+                            className="px-3 py-1 text-sm bg-gray-50 text-gray-700 rounded-md"
+                          >
+                            {technique}
+                          </span>
+                        ))}
+                      </div>
+                      
+                      {isCompleted ? (
+                        <Link 
+                          to={createPageUrl(project.id)} 
+                          className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium transition-colors"
+                        >
+                          View Project <ExternalLink className="w-4 h-4" />
+                        </Link>
+                      ) : (
+                        <span className="inline-flex items-center gap-2 text-gray-400 font-medium">
+                          View Project <ExternalLink className="w-4 h-4" />
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Footer */}
+        <footer className="mt-16 pt-8 border-t border-gray-200 text-center">
+          <p className="text-gray-500 text-sm">
+            Built for CS180: Intro to Computer Vision and Computational Photography
+          </p>
+        </footer>
+      </main>
+    </div>
+  );
+}
