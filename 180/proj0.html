@@ -1,0 +1,245 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { createPageUrl } from '@/utils';
+import { ArrowLeft, Camera, ExternalLink } from 'lucide-react';
+
+export default function Proj0() {
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <header className="bg-white border-b border-gray-200">
+        <div className="max-w-4xl mx-auto px-6 py-6">
+          <div className="flex items-center gap-4">
+            <Link 
+              to={createPageUrl('Home')} 
+              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            >
+              <ArrowLeft className="w-5 h-5 text-gray-600" />
+            </Link>
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                <Camera className="w-5 h-5 text-blue-600" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-medium text-gray-900">
+                  Project 0: Becoming Friends with Your Camera
+                </h1>
+                <p className="text-gray-600">CS180 • Fall 2024</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="max-w-4xl mx-auto px-6 py-8">
+        <div className="bg-white rounded-lg border border-gray-200 p-8 mb-8">
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-red-50 text-red-700 rounded-lg mb-4">
+              <span className="font-medium">Due: Tuesday, September 2nd, 2025 at 11:59PM</span>
+            </div>
+          </div>
+
+          <section className="mb-10">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">Overview</h2>
+            <p className="text-gray-700 leading-relaxed">
+              In this class, we want you to <em>become friends with every pixel.</em> The first step toward this goal is to become friends with your camera—e.g., the one in your smartphone. In particular, the goal of this project is to get you some intuitive understanding of the somewhat subtle relationship between perspective, focal length/zoom, and the center of projection. Don't worry if these terms aren't familiar to you yet. For now, your task is to just take some photos with your camera, as described below:
+            </p>
+          </section>
+
+          <section className="mb-10">
+            <h2 className="text-xl font-semibold text-gray-900 mb-6">
+              Part 1: Selfie: The Wrong Way vs. The Right Way
+            </h2>
+            <p className="text-gray-700 leading-relaxed mb-6">
+              Take a picture of your friend (or yourself) from close up. You get a typical distorted selfie image. Now step back several feet from your subject, zoom in, and take a second picture. Try to get the face in the second photo to be the same size as in the first photo. If you've done things right, the second portrait should look much better than the first one.
+            </p>
+            
+            {/* Placeholder for images */}
+            <div className="grid md:grid-cols-2 gap-6 mb-6">
+              <div className="bg-gray-100 rounded-lg p-6">
+                <div className="aspect-square bg-gray-200 rounded-lg mb-4 flex items-center justify-center">
+                  <Camera className="w-12 h-12 text-gray-400" />
+                </div>
+                <h3 className="font-medium text-gray-900 text-center">Close-up Portrait</h3>
+                <p className="text-sm text-gray-600 text-center">Replace with your close-up selfie</p>
+              </div>
+              <div className="bg-gray-100 rounded-lg p-6">
+                <div className="aspect-square bg-gray-200 rounded-lg mb-4 flex items-center justify-center">
+                  <Camera className="w-12 h-12 text-gray-400" />
+                </div>
+                <h3 className="font-medium text-gray-900 text-center">Zoomed Portrait</h3>
+                <p className="text-sm text-gray-600 text-center">Replace with your zoomed-in portrait</p>
+              </div>
+            </div>
+            
+            {/* Commented analysis section */}
+            {/*
+            <div className="bg-blue-50 rounded-lg p-6">
+              <h3 className="font-medium text-blue-900 mb-2">Analysis</h3>
+              <p className="text-blue-800">
+                Add your thoughts on why the second portrait looks better here...
+              </p>
+            </div>
+            */}
+          </section>
+
+          <section className="mb-10">
+            <h2 className="text-xl font-semibold text-gray-900 mb-6">
+              Part 2: Architectural Perspective Compression
+            </h2>
+            <p className="text-gray-700 leading-relaxed mb-6">
+              Let's repeat the same procedure in reverse, for an urban scene. Pick a nice view down a long street (or a walking path on campus), zoom in, and take a photo. Now, walk down the street in the direction of your first shot, and take a second photo without zoom, such that the scene in the two photos appears approximately the same size. The first picture should look flattened, or compressed, compared to the second.
+            </p>
+            
+            {/* Placeholder for images */}
+            <div className="grid md:grid-cols-2 gap-6 mb-6">
+              <div className="bg-gray-100 rounded-lg p-6">
+                <div className="aspect-video bg-gray-200 rounded-lg mb-4 flex items-center justify-center">
+                  <Camera className="w-12 h-12 text-gray-400" />
+                </div>
+                <h3 className="font-medium text-gray-900 text-center">Compressed Perspective</h3>
+                <p className="text-sm text-gray-600 text-center">Replace with your zoomed architectural shot</p>
+              </div>
+              <div className="bg-gray-100 rounded-lg p-6">
+                <div className="aspect-video bg-gray-200 rounded-lg mb-4 flex items-center justify-center">
+                  <Camera className="w-12 h-12 text-gray-400" />
+                </div>
+                <h3 className="font-medium text-gray-900 text-center">Natural Perspective</h3>
+                <p className="text-sm text-gray-600 text-center">Replace with your wide architectural shot</p>
+              </div>
+            </div>
+            
+            {/* Commented analysis section */}
+            {/*
+            <div className="bg-blue-50 rounded-lg p-6">
+              <h3 className="font-medium text-blue-900 mb-2">Analysis</h3>
+              <p className="text-blue-800">
+                Add your thoughts on the perspective compression effect here...
+              </p>
+            </div>
+            */}
+          </section>
+
+          <section className="mb-10">
+            <h2 className="text-xl font-semibold text-gray-900 mb-6">
+              Part 3: The Dolly Zoom
+            </h2>
+            <p className="text-gray-700 leading-relaxed mb-4">
+              In this part, we will be duplicating a classic film effect called the{' '}
+              <a 
+                href="https://en.wikipedia.org/wiki/Dolly_zoom" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:text-blue-700 underline"
+              >
+                dolly zoom
+              </a>. It is a camera movement also known as the "Vertigo shot", after a famous scene in Hitchcock's Vertigo.
+            </p>
+            
+            {/* Video embed */}
+            <div className="mb-6">
+              <div className="aspect-video bg-gray-900 rounded-lg flex items-center justify-center">
+                <iframe
+                  width="100%"
+                  height="100%"
+                  src="https://www.youtube.com/embed/_OO3pqJVLAc"
+                  title="Dolly Zoom examples"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  className="rounded-lg"
+                />
+              </div>
+            </div>
+            
+            <p className="text-gray-700 leading-relaxed mb-6">
+              The idea is to simultaneously move the camera back while also zooming in. First, come up with a good setting for the shot (e.g., a scene with stuffed animals is one popular choice). Now take a few (4-8 or even more!) still photos while you move the camera back and zoom in, keeping the resulting image roughly the same size. Combine your stills into an animated GIF file—you have a dolly zoom!
+            </p>
+            
+            {/* Placeholder for GIF */}
+            <div className="bg-gray-100 rounded-lg p-8 text-center mb-6">
+              <div className="aspect-video bg-gray-200 rounded-lg mb-4 flex items-center justify-center max-w-md mx-auto">
+                <div className="text-center">
+                  <Camera className="w-12 h-12 text-gray-400 mx-auto mb-2" />
+                  <p className="text-gray-500 font-medium">Your Dolly Zoom GIF</p>
+                </div>
+              </div>
+              <p className="text-sm text-gray-600">Replace with your animated dolly zoom GIF</p>
+            </div>
+            
+            {/* Commented analysis section */}
+            {/*
+            <div className="bg-blue-50 rounded-lg p-6">
+              <h3 className="font-medium text-blue-900 mb-2">Analysis</h3>
+              <p className="text-blue-800">
+                Add your thoughts on the dolly zoom effect here...
+              </p>
+            </div>
+            */}
+          </section>
+
+          <section>
+            <h2 className="text-xl font-semibold text-gray-900 mb-6">
+              Deliverables & Submission
+            </h2>
+            <div className="bg-yellow-50 rounded-lg p-6 mb-6">
+              <p className="text-yellow-800 font-medium text-center">
+                Take beautiful photos. Make your webpage visually appealing. Aesthetics matter!
+              </p>
+            </div>
+            
+            <ol className="space-y-4 text-gray-700">
+              <li className="flex gap-3">
+                <span className="flex-shrink-0 w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-sm font-medium">1</span>
+                <div>
+                  <strong>Host your webpage online.</strong> We recommend using GitHub Pages, but any hosting service is acceptable. You may organize your project in any directory structure you prefer.
+                </div>
+              </li>
+              <li className="flex gap-3">
+                <span className="flex-shrink-0 w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-sm font-medium">2</span>
+                <div>
+                  <strong>Submit your webpage URL to the class gallery.</strong>
+                  <br/>
+                  <a 
+                    href="https://forms.gle/55acn3qyebLK6qwN7" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-700 underline mt-1"
+                  >
+                    Google Form <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
+              </li>
+              <li className="flex gap-3">
+                <span className="flex-shrink-0 w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-sm font-medium">3</span>
+                <div>
+                  <strong>Submit a PDF version to Gradescope</strong> (Entry code: <strong>VWX283</strong>)
+                  <br/>
+                  <span className="text-sm text-gray-600 mt-1 block">
+                    Print your webpage as a PDF with the URL in the header. This serves as a reference for grading and ensures your submission remains unchanged after the deadline.
+                  </span>
+                </div>
+              </li>
+            </ol>
+          </section>
+        </div>
+
+        {/* Navigation */}
+        <div className="flex justify-between items-center">
+          <Link 
+            to={createPageUrl('Home')} 
+            className="inline-flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-900 border border-gray-200 hover:border-gray-300 rounded-lg transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back to Portfolio
+          </Link>
+          
+          <div className="text-sm text-gray-500">
+            Project 0 of 5
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+}
