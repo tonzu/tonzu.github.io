@@ -1,188 +1,474 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { createPageUrl } from '@/utils';
-import { ExternalLink, Camera, Image, Zap } from 'lucide-react';
-
-export default function Home() {
-  const projects = [
-    {
-      id: 'proj0',
-      title: 'Project 0: Becoming Friends with Your Camera',
-      description: 'Exploring perspective, focal length, and center of projection through selfies, architectural photography, and the dolly zoom effect.',
-      status: 'completed',
-      techniques: ['Portrait Photography', 'Perspective Compression', 'Dolly Zoom'],
-      icon: Camera
-    },
-    {
-      id: 'proj1',
-      title: 'Project 1: TBD',
-      description: 'Project details coming soon...',
-      status: 'upcoming',
-      techniques: ['TBD'],
-      icon: Image
-    },
-    {
-      id: 'proj2',
-      title: 'Project 2: TBD',
-      description: 'Project details coming soon...',
-      status: 'upcoming',
-      techniques: ['TBD'],
-      icon: Zap
-    },
-    {
-      id: 'proj3',
-      title: 'Project 3: TBD',
-      description: 'Project details coming soon...',
-      status: 'upcoming',
-      techniques: ['TBD'],
-      icon: Camera
-    },
-    {
-      id: 'proj4',
-      title: 'Project 4: TBD',
-      description: 'Project details coming soon...',
-      status: 'upcoming',
-      techniques: ['TBD'],
-      icon: Image
-    },
-    {
-      id: 'proj5',
-      title: 'Project 5: TBD',
-      description: 'Project details coming soon...',
-      status: 'upcoming',
-      techniques: ['TBD'],
-      icon: Zap
-    }
-  ];
-
-  return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200">
-        <div className="max-w-4xl mx-auto px-6 py-8">
-          <div className="flex items-center gap-4">
-            <div className="w-16 h-16 bg-blue-600 rounded-lg flex items-center justify-center">
-              <Camera className="w-8 h-8 text-white" />
-            </div>
-            <div>
-              <h1 className="text-3xl font-light text-gray-900 mb-1">
-                CS180 Portfolio
-              </h1>
-              <p className="text-gray-600 text-lg">
-                Intro to Computer Vision and Computational Photography
-              </p>
-              <div className="flex items-center gap-2 mt-2">
-                <span className="text-sm text-gray-500">UC Berkeley • Fall 2024</span>
-                <a 
-                  href="https://tonzu.github.io/" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-700 transition-colors"
-                >
-                  tonzu.github.io <ExternalLink className="w-3 h-3" />
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-6 py-12">
-        <div className="mb-12">
-          <h2 className="text-2xl font-light text-gray-900 mb-4">
-            Projects
-          </h2>
-          <p className="text-gray-600 max-w-2xl leading-relaxed">
-            This portfolio showcases my journey through computational photography and computer vision, 
-            exploring the intersection of mathematics, optics, and creative expression.
-          </p>
-        </div>
-
-        {/* Projects Grid */}
-        <div className="grid gap-8">
-          {projects.map((project) => {
-            const IconComponent = project.icon;
-            const isCompleted = project.status === 'completed';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CS180 Portfolio</title>
+    <link href__="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #374151;
+            background-color: #f9fafb;
+        }
+        
+        .container {
+            max-width: 1024px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        
+        /* Header */
+        header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .header-content {
+            padding: 2rem 0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo {
+            width: 4rem;
+            height: 4rem;
+            background: #2563eb;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+        }
+        
+        .header-text h1 {
+            font-size: 1.875rem;
+            font-weight: 300;
+            color: #111827;
+            margin-bottom: 0.25rem;
+        }
+        
+        .header-text .subtitle {
+            color: #6b7280;
+            font-size: 1.125rem;
+        }
+        
+        .header-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .header-meta .semester {
+            color: #6b7280;
+        }
+        
+        .header-meta a {
+            color: #2563eb;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .header-meta a:hover {
+            color: #1d4ed8;
+        }
+        
+        /* Main Content */
+        main {
+            padding: 3rem 0;
+        }
+        
+        .intro {
+            margin-bottom: 3rem;
+        }
+        
+        .intro h2 {
+            font-size: 1.5rem;
+            font-weight: 300;
+            color: #111827;
+            margin-bottom: 1rem;
+        }
+        
+        .intro p {
+            color: #6b7280;
+            max-width: 42rem;
+            line-height: 1.625;
+        }
+        
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            gap: 2rem;
+        }
+        
+        .project-card {
+            background: white;
+            border-radius: 0.5rem;
+            border: 1px solid #e5e7eb;
+            transition: all 0.2s;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+        }
+        
+        .project-card.completed:hover {
+            border-color: #93c5fd;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .project-card.upcoming {
+            opacity: 0.75;
+        }
+        
+        .project-content {
+            padding: 2rem;
+        }
+        
+        .project-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
+        }
+        
+        .project-icon {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .project-icon.completed {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+        
+        .project-icon.upcoming {
+            background: #f3f4f6;
+            color: #9ca3af;
+        }
+        
+        .project-details {
+            flex: 1;
+        }
+        
+        .project-title-row {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            flex-wrap: wrap;
+        }
+        
+        .project-title {
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: #111827;
+        }
+        
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            border-radius: 9999px;
+        }
+        
+        .status-badge.completed {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .status-badge.upcoming {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+        
+        .project-description {
+            color: #6b7280;
+            line-height: 1.625;
+            margin-bottom: 1rem;
+        }
+        
+        .techniques {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .technique-tag {
+            padding: 0.25rem 0.75rem;
+            font-size: 0.875rem;
+            background: #f9fafb;
+            color: #374151;
+            border-radius: 0.375rem;
+        }
+        
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .project-link.active {
+            color: #2563eb;
+        }
+        
+        .project-link.active:hover {
+            color: #1d4ed8;
+        }
+        
+        .project-link.inactive {
+            color: #9ca3af;
+            cursor: not-allowed;
+        }
+        
+        /* Footer */
+        footer {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e5e7eb;
+            text-align: center;
+        }
+        
+        footer p {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
             
-            return (
-              <div 
-                key={project.id}
-                className={`bg-white rounded-lg border transition-all duration-200 ${
-                  isCompleted 
-                    ? 'border-gray-200 hover:border-blue-300 hover:shadow-lg shadow-sm' 
-                    : 'border-gray-100 opacity-75'
-                }`}
-              >
-                <div className="p-8">
-                  <div className="flex items-start gap-6">
-                    <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${
-                      isCompleted ? 'bg-blue-100' : 'bg-gray-100'
-                    }`}>
-                      <IconComponent className={`w-6 h-6 ${
-                        isCompleted ? 'text-blue-600' : 'text-gray-400'
-                      }`} />
-                    </div>
-                    
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-3">
-                        <h3 className="text-xl font-medium text-gray-900">
-                          {project.title}
-                        </h3>
-                        {isCompleted && (
-                          <span className="px-3 py-1 text-xs font-medium bg-green-100 text-green-700 rounded-full">
-                            Completed
-                          </span>
-                        )}
-                        {!isCompleted && (
-                          <span className="px-3 py-1 text-xs font-medium bg-gray-100 text-gray-500 rounded-full">
-                            Coming Soon
-                          </span>
-                        )}
-                      </div>
-                      
-                      <p className="text-gray-600 leading-relaxed mb-4">
-                        {project.description}
-                      </p>
-                      
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {project.techniques.map((technique) => (
-                          <span 
-                            key={technique}
-                            className="px-3 py-1 text-sm bg-gray-50 text-gray-700 rounded-md"
-                          >
-                            {technique}
-                          </span>
-                        ))}
-                      </div>
-                      
-                      {isCompleted ? (
-                        <Link 
-                          to={createPageUrl(project.id)} 
-                          className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium transition-colors"
-                        >
-                          View Project <ExternalLink className="w-4 h-4" />
-                        </Link>
-                      ) : (
-                        <span className="inline-flex items-center gap-2 text-gray-400 font-medium">
-                          View Project <ExternalLink className="w-4 h-4" />
-                        </span>
-                      )}
-                    </div>
-                  </div>
+            .header-content {
+                padding: 1.5rem 0;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.75rem;
+            }
+            
+            .header-text h1 {
+                font-size: 1.5rem;
+            }
+            
+            .header-text .subtitle {
+                font-size: 1rem;
+            }
+            
+            .project-header {
+                gap: 1rem;
+            }
+            
+            .project-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-camera"></i>
                 </div>
-              </div>
-            );
-          })}
+                <div class="header-text">
+                    <h1>CS180 Portfolio</h1>
+                    <p class="subtitle">Intro to Computer Vision and Computational Photography</p>
+                    <div class="header-meta">
+                        <span class="semester">UC Berkeley • Fall 2024</span>
+                        <a href__="https://tonzu.github.io/" target="_blank" rel="noopener noreferrer">
+                            tonzu.github.io <i class="fas fa-external-link-alt" style="font-size: 0.75rem;"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
+    </header>
 
-        {/* Footer */}
-        <footer className="mt-16 pt-8 border-t border-gray-200 text-center">
-          <p className="text-gray-500 text-sm">
-            Built for CS180: Intro to Computer Vision and Computational Photography
-          </p>
-        </footer>
-      </main>
-    </div>
-  );
-}
+    <!-- Main Content -->
+    <main>
+        <div class="container">
+            <div class="intro">
+                <h2>Projects</h2>
+                <p>
+                    This portfolio showcases my journey through computational photography and computer vision, 
+                    exploring the intersection of mathematics, optics, and creative expression.
+                </p>
+            </div>
+
+            <!-- Projects Grid -->
+            <div class="projects-grid">
+                <!-- Project 0 -->
+                <div class="project-card completed">
+                    <div class="project-content">
+                        <div class="project-header">
+                            <div class="project-icon completed">
+                                <i class="fas fa-camera"></i>
+                            </div>
+                            <div class="project-details">
+                                <div class="project-title-row">
+                                    <h3 class="project-title">Project 0: Becoming Friends with Your Camera</h3>
+                                    <span class="status-badge completed">Completed</span>
+                                </div>
+                                <p class="project-description">
+                                    Exploring perspective, focal length, and center of projection through selfies, 
+                                    architectural photography, and the dolly zoom effect.
+                                </p>
+                                <div class="techniques">
+                                    <span class="technique-tag">Portrait Photography</span>
+                                    <span class="technique-tag">Perspective Compression</span>
+                                    <span class="technique-tag">Dolly Zoom</span>
+                                </div>
+                                <a href__="proj0.html" class="project-link active">
+                                    View Project <i class="fas fa-external-link-alt"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Projects 1-5 -->
+                <div class="project-card upcoming">
+                    <div class="project-content">
+                        <div class="project-header">
+                            <div class="project-icon upcoming">
+                                <i class="fas fa-image"></i>
+                            </div>
+                            <div class="project-details">
+                                <div class="project-title-row">
+                                    <h3 class="project-title">Project 1: TBD</h3>
+                                    <span class="status-badge upcoming">Coming Soon</span>
+                                </div>
+                                <p class="project-description">Project details coming soon...</p>
+                                <div class="techniques">
+                                    <span class="technique-tag">TBD</span>
+                                </div>
+                                <span class="project-link inactive">
+                                    View Project <i class="fas fa-external-link-alt"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card upcoming">
+                    <div class="project-content">
+                        <div class="project-header">
+                            <div class="project-icon upcoming">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <div class="project-details">
+                                <div class="project-title-row">
+                                    <h3 class="project-title">Project 2: TBD</h3>
+                                    <span class="status-badge upcoming">Coming Soon</span>
+                                </div>
+                                <p class="project-description">Project details coming soon...</p>
+                                <div class="techniques">
+                                    <span class="technique-tag">TBD</span>
+                                </div>
+                                <span class="project-link inactive">
+                                    View Project <i class="fas fa-external-link-alt"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card upcoming">
+                    <div class="project-content">
+                        <div class="project-header">
+                            <div class="project-icon upcoming">
+                                <i class="fas fa-camera"></i>
+                            </div>
+                            <div class="project-details">
+                                <div class="project-title-row">
+                                    <h3 class="project-title">Project 3: TBD</h3>
+                                    <span class="status-badge upcoming">Coming Soon</span>
+                                </div>
+                                <p class="project-description">Project details coming soon...</p>
+                                <div class="techniques">
+                                    <span class="technique-tag">TBD</span>
+                                </div>
+                                <span class="project-link inactive">
+                                    View Project <i class="fas fa-external-link-alt"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card upcoming">
+                    <div class="project-content">
+                        <div class="project-header">
+                            <div class="project-icon upcoming">
+                                <i class="fas fa-image"></i>
+                            </div>
+                            <div class="project-details">
+                                <div class="project-title-row">
+                                    <h3 class="project-title">Project 4: TBD</h3>
+                                    <span class="status-badge upcoming">Coming Soon</span>
+                                </div>
+                                <p class="project-description">Project details coming soon...</p>
+                                <div class="techniques">
+                                    <span class="technique-tag">TBD</span>
+                                </div>
+                                <span class="project-link inactive">
+                                    View Project <i class="fas fa-external-link-alt"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card upcoming">
+                    <div class="project-content">
+                        <div class="project-header">
+                            <div class="project-icon upcoming">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <div class="project-details">
+                                <div class="project-title-row">
+                                    <h3 class="project-title">Project 5: TBD</h3>
+                                    <span class="status-badge upcoming">Coming Soon</span>
+                                </div>
+                                <p class="project-description">Project details coming soon...</p>
+                                <div class="techniques">
+                                    <span class="technique-tag">TBD</span>
+                                </div>
+                                <span class="project-link inactive">
+                                    View Project <i class="fas fa-external-link-alt"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <footer>
+                <p>Built for CS180: Intro to Computer Vision and Computational Photography</p>
+            </footer>
+        </div>
+    </main>
+</body>
+</html>

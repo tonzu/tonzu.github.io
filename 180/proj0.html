@@ -1,245 +1,579 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { createPageUrl } from '@/utils';
-import { ArrowLeft, Camera, ExternalLink } from 'lucide-react';
-
-export default function Proj0() {
-  return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200">
-        <div className="max-w-4xl mx-auto px-6 py-6">
-          <div className="flex items-center gap-4">
-            <Link 
-              to={createPageUrl('Home')} 
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-            >
-              <ArrowLeft className="w-5 h-5 text-gray-600" />
-            </Link>
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                <Camera className="w-5 h-5 text-blue-600" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-medium text-gray-900">
-                  Project 0: Becoming Friends with Your Camera
-                </h1>
-                <p className="text-gray-600">CS180 • Fall 2024</p>
-              </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project 0: Becoming Friends with Your Camera | CS180</title>
+    <link href__="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #374151;
+            background-color: #f9fafb;
+        }
+        
+        .container {
+            max-width: 1024px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        
+        /* Header */
+        header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .header-content {
+            padding: 1.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .back-button {
+            padding: 0.5rem;
+            color: #6b7280;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            transition: background-color 0.2s;
+        }
+        
+        .back-button:hover {
+            background: #f3f4f6;
+            color: #111827;
+        }
+        
+        .header-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .project-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            background: #dbeafe;
+            color: #2563eb;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .project-title {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: #111827;
+            margin: 0;
+        }
+        
+        .project-course {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+        
+        /* Main Content */
+        main {
+            padding: 2rem 0;
+        }
+        
+        .content-card {
+            background: white;
+            border-radius: 0.5rem;
+            border: 1px solid #e5e7eb;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .due-date {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .due-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: #fef2f2;
+            color: #991b1b;
+            border-radius: 0.5rem;
+            font-weight: 500;
+        }
+        
+        /* Sections */
+        section {
+            margin-bottom: 2.5rem;
+        }
+        
+        section:last-child {
+            margin-bottom: 0;
+        }
+        
+        h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 1rem;
+        }
+        
+        h3 {
+            font-size: 1.125rem;
+            font-weight: 500;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+        
+        p {
+            color: #374151;
+            line-height: 1.625;
+            margin-bottom: 1.5rem;
+        }
+        
+        p:last-child {
+            margin-bottom: 0;
+        }
+        
+        em {
+            font-style: italic;
+        }
+        
+        a {
+            color: #2563eb;
+            text-decoration: underline;
+        }
+        
+        a:hover {
+            color: #1d4ed8;
+        }
+        
+        /* Image Grid */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .image-placeholder {
+            background: #f3f4f6;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .image-box {
+            background: #e5e7eb;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+            font-size: 3rem;
+        }
+        
+        .image-box.portrait {
+            aspect-ratio: 1;
+        }
+        
+        .image-box.landscape {
+            aspect-ratio: 16/9;
+        }
+        
+        .image-box.gif {
+            aspect-ratio: 16/9;
+            max-width: 28rem;
+            margin: 0 auto 1rem auto;
+        }
+        
+        .image-caption {
+            font-weight: 500;
+            color: #111827;
+            margin-bottom: 0.25rem;
+        }
+        
+        .image-description {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin: 0;
+        }
+        
+        /* GIF Section */
+        .gif-container {
+            background: #f3f4f6;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Video Embed */
+        .video-container {
+            margin-bottom: 1.5rem;
+        }
+        
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            background: #1f2937;
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+        
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 0.5rem;
+        }
+        
+        /* Analysis Box (commented out) */
+        .analysis-box {
+            background: #eff6ff;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+        }
+        
+        .analysis-title {
+            font-weight: 500;
+            color: #1e40af;
+            margin-bottom: 0.5rem;
+        }
+        
+        .analysis-content {
+            color: #1e3a8a;
+            margin: 0;
+        }
+        
+        /* Deliverables */
+        .highlight-box {
+            background: #fffbeb;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .highlight-text {
+            color: #92400e;
+            font-weight: 500;
+            text-align: center;
+            margin: 0;
+        }
+        
+        ol {
+            list-style: none;
+            counter-reset: step-counter;
+        }
+        
+        ol li {
+            counter-increment: step-counter;
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            color: #374151;
+        }
+        
+        ol li:last-child {
+            margin-bottom: 0;
+        }
+        
+        ol li::before {
+            content: counter(step-counter);
+            flex-shrink: 0;
+            width: 1.5rem;
+            height: 1.5rem;
+            background: #dbeafe;
+            color: #1d4ed8;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        .step-content strong {
+            color: #111827;
+        }
+        
+        .step-content br + a {
+            margin-top: 0.25rem;
+            display: inline-block;
+        }
+        
+        /* Navigation */
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+        }
+        
+        .nav-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            color: #6b7280;
+            text-decoration: none;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            transition: all 0.2s;
+        }
+        
+        .nav-button:hover {
+            color: #111827;
+            border-color: #d1d5db;
+        }
+        
+        .project-counter {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .content-card {
+                padding: 1.5rem;
+            }
+            
+            .header-content {
+                padding: 1rem 0;
+                flex-wrap: wrap;
+            }
+            
+            .project-title {
+                font-size: 1.25rem;
+            }
+            
+            .image-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .gif-container {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href__="index.html" class="back-button">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <div class="header-info">
+                    <div class="project-icon">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <div>
+                        <h1 class="project-title">Project 0: Becoming Friends with Your Camera</h1>
+                        <p class="project-course">CS180 • Fall 2024</p>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </header>
+    </header>
 
-      {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-6 py-8">
-        <div className="bg-white rounded-lg border border-gray-200 p-8 mb-8">
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-red-50 text-red-700 rounded-lg mb-4">
-              <span className="font-medium">Due: Tuesday, September 2nd, 2025 at 11:59PM</span>
-            </div>
-          </div>
+    <!-- Main Content -->
+    <main>
+        <div class="container">
+            <div class="content-card">
+                <div class="due-date">
+                    <div class="due-badge">
+                        Due: Tuesday, September 2nd, 2025 at 11:59PM
+                    </div>
+                </div>
 
-          <section className="mb-10">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Overview</h2>
-            <p className="text-gray-700 leading-relaxed">
-              In this class, we want you to <em>become friends with every pixel.</em> The first step toward this goal is to become friends with your camera—e.g., the one in your smartphone. In particular, the goal of this project is to get you some intuitive understanding of the somewhat subtle relationship between perspective, focal length/zoom, and the center of projection. Don't worry if these terms aren't familiar to you yet. For now, your task is to just take some photos with your camera, as described below:
-            </p>
-          </section>
+                <section>
+                    <h2>Overview</h2>
+                    <p>
+                        In this class, we want you to <em>become friends with every pixel.</em> The first step toward this goal is to become friends with your camera—e.g., the one in your smartphone. In particular, the goal of this project is to get you some intuitive understanding of the somewhat subtle relationship between perspective, focal length/zoom, and the center of projection. Don't worry if these terms aren't familiar to you yet. For now, your task is to just take some photos with your camera, as described below:
+                    </p>
+                </section>
 
-          <section className="mb-10">
-            <h2 className="text-xl font-semibold text-gray-900 mb-6">
-              Part 1: Selfie: The Wrong Way vs. The Right Way
-            </h2>
-            <p className="text-gray-700 leading-relaxed mb-6">
-              Take a picture of your friend (or yourself) from close up. You get a typical distorted selfie image. Now step back several feet from your subject, zoom in, and take a second picture. Try to get the face in the second photo to be the same size as in the first photo. If you've done things right, the second portrait should look much better than the first one.
-            </p>
-            
-            {/* Placeholder for images */}
-            <div className="grid md:grid-cols-2 gap-6 mb-6">
-              <div className="bg-gray-100 rounded-lg p-6">
-                <div className="aspect-square bg-gray-200 rounded-lg mb-4 flex items-center justify-center">
-                  <Camera className="w-12 h-12 text-gray-400" />
-                </div>
-                <h3 className="font-medium text-gray-900 text-center">Close-up Portrait</h3>
-                <p className="text-sm text-gray-600 text-center">Replace with your close-up selfie</p>
-              </div>
-              <div className="bg-gray-100 rounded-lg p-6">
-                <div className="aspect-square bg-gray-200 rounded-lg mb-4 flex items-center justify-center">
-                  <Camera className="w-12 h-12 text-gray-400" />
-                </div>
-                <h3 className="font-medium text-gray-900 text-center">Zoomed Portrait</h3>
-                <p className="text-sm text-gray-600 text-center">Replace with your zoomed-in portrait</p>
-              </div>
-            </div>
-            
-            {/* Commented analysis section */}
-            {/*
-            <div className="bg-blue-50 rounded-lg p-6">
-              <h3 className="font-medium text-blue-900 mb-2">Analysis</h3>
-              <p className="text-blue-800">
-                Add your thoughts on why the second portrait looks better here...
-              </p>
-            </div>
-            */}
-          </section>
+                <section>
+                    <h2>Part 1: Selfie: The Wrong Way vs. The Right Way</h2>
+                    <p>
+                        Take a picture of your friend (or yourself) from close up. You get a typical distorted selfie image. Now step back several feet from your subject, zoom in, and take a second picture. Try to get the face in the second photo to be the same size as in the first photo. If you've done things right, the second portrait should look much better than the first one.
+                    </p>
+                    
+                    <!-- Placeholder for images -->
+                    <div class="image-grid">
+                        <div class="image-placeholder">
+                            <div class="image-box portrait">
+                                <i class="fas fa-camera"></i>
+                            </div>
+                            <h3 class="image-caption">Close-up Portrait</h3>
+                            <p class="image-description">Replace with your close-up selfie</p>
+                        </div>
+                        <div class="image-placeholder">
+                            <div class="image-box portrait">
+                                <i class="fas fa-camera"></i>
+                            </div>
+                            <h3 class="image-caption">Zoomed Portrait</h3>
+                            <p class="image-description">Replace with your zoomed-in portrait</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Commented analysis section -->
+                    <!--
+                    <div class="analysis-box">
+                        <h3 class="analysis-title">Analysis</h3>
+                        <p class="analysis-content">
+                            Add your thoughts on why the second portrait looks better here...
+                        </p>
+                    </div>
+                    -->
+                </section>
 
-          <section className="mb-10">
-            <h2 className="text-xl font-semibold text-gray-900 mb-6">
-              Part 2: Architectural Perspective Compression
-            </h2>
-            <p className="text-gray-700 leading-relaxed mb-6">
-              Let's repeat the same procedure in reverse, for an urban scene. Pick a nice view down a long street (or a walking path on campus), zoom in, and take a photo. Now, walk down the street in the direction of your first shot, and take a second photo without zoom, such that the scene in the two photos appears approximately the same size. The first picture should look flattened, or compressed, compared to the second.
-            </p>
-            
-            {/* Placeholder for images */}
-            <div className="grid md:grid-cols-2 gap-6 mb-6">
-              <div className="bg-gray-100 rounded-lg p-6">
-                <div className="aspect-video bg-gray-200 rounded-lg mb-4 flex items-center justify-center">
-                  <Camera className="w-12 h-12 text-gray-400" />
-                </div>
-                <h3 className="font-medium text-gray-900 text-center">Compressed Perspective</h3>
-                <p className="text-sm text-gray-600 text-center">Replace with your zoomed architectural shot</p>
-              </div>
-              <div className="bg-gray-100 rounded-lg p-6">
-                <div className="aspect-video bg-gray-200 rounded-lg mb-4 flex items-center justify-center">
-                  <Camera className="w-12 h-12 text-gray-400" />
-                </div>
-                <h3 className="font-medium text-gray-900 text-center">Natural Perspective</h3>
-                <p className="text-sm text-gray-600 text-center">Replace with your wide architectural shot</p>
-              </div>
-            </div>
-            
-            {/* Commented analysis section */}
-            {/*
-            <div className="bg-blue-50 rounded-lg p-6">
-              <h3 className="font-medium text-blue-900 mb-2">Analysis</h3>
-              <p className="text-blue-800">
-                Add your thoughts on the perspective compression effect here...
-              </p>
-            </div>
-            */}
-          </section>
+                <section>
+                    <h2>Part 2: Architectural Perspective Compression</h2>
+                    <p>
+                        Let's repeat the same procedure in reverse, for an urban scene. Pick a nice view down a long street (or a walking path on campus), zoom in, and take a photo. Now, walk down the street in the direction of your first shot, and take a second photo without zoom, such that the scene in the two photos appears approximately the same size. The first picture should look flattened, or compressed, compared to the second.
+                    </p>
+                    
+                    <!-- Placeholder for images -->
+                    <div class="image-grid">
+                        <div class="image-placeholder">
+                            <div class="image-box landscape">
+                                <i class="fas fa-camera"></i>
+                            </div>
+                            <h3 class="image-caption">Compressed Perspective</h3>
+                            <p class="image-description">Replace with your zoomed architectural shot</p>
+                        </div>
+                        <div class="image-placeholder">
+                            <div class="image-box landscape">
+                                <i class="fas fa-camera"></i>
+                            </div>
+                            <h3 class="image-caption">Natural Perspective</h3>
+                            <p class="image-description">Replace with your wide architectural shot</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Commented analysis section -->
+                    <!--
+                    <div class="analysis-box">
+                        <h3 class="analysis-title">Analysis</h3>
+                        <p class="analysis-content">
+                            Add your thoughts on the perspective compression effect here...
+                        </p>
+                    </div>
+                    -->
+                </section>
 
-          <section className="mb-10">
-            <h2 className="text-xl font-semibold text-gray-900 mb-6">
-              Part 3: The Dolly Zoom
-            </h2>
-            <p className="text-gray-700 leading-relaxed mb-4">
-              In this part, we will be duplicating a classic film effect called the{' '}
-              <a 
-                href="https://en.wikipedia.org/wiki/Dolly_zoom" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-blue-600 hover:text-blue-700 underline"
-              >
-                dolly zoom
-              </a>. It is a camera movement also known as the "Vertigo shot", after a famous scene in Hitchcock's Vertigo.
-            </p>
-            
-            {/* Video embed */}
-            <div className="mb-6">
-              <div className="aspect-video bg-gray-900 rounded-lg flex items-center justify-center">
-                <iframe
-                  width="100%"
-                  height="100%"
-                  src="https://www.youtube.com/embed/_OO3pqJVLAc"
-                  title="Dolly Zoom examples"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                  className="rounded-lg"
-                />
-              </div>
-            </div>
-            
-            <p className="text-gray-700 leading-relaxed mb-6">
-              The idea is to simultaneously move the camera back while also zooming in. First, come up with a good setting for the shot (e.g., a scene with stuffed animals is one popular choice). Now take a few (4-8 or even more!) still photos while you move the camera back and zoom in, keeping the resulting image roughly the same size. Combine your stills into an animated GIF file—you have a dolly zoom!
-            </p>
-            
-            {/* Placeholder for GIF */}
-            <div className="bg-gray-100 rounded-lg p-8 text-center mb-6">
-              <div className="aspect-video bg-gray-200 rounded-lg mb-4 flex items-center justify-center max-w-md mx-auto">
-                <div className="text-center">
-                  <Camera className="w-12 h-12 text-gray-400 mx-auto mb-2" />
-                  <p className="text-gray-500 font-medium">Your Dolly Zoom GIF</p>
-                </div>
-              </div>
-              <p className="text-sm text-gray-600">Replace with your animated dolly zoom GIF</p>
-            </div>
-            
-            {/* Commented analysis section */}
-            {/*
-            <div className="bg-blue-50 rounded-lg p-6">
-              <h3 className="font-medium text-blue-900 mb-2">Analysis</h3>
-              <p className="text-blue-800">
-                Add your thoughts on the dolly zoom effect here...
-              </p>
-            </div>
-            */}
-          </section>
+                <section>
+                    <h2>Part 3: The Dolly Zoom</h2>
+                    <p>
+                        In this part, we will be duplicating a classic film effect called the 
+                        <a href__="https://en.wikipedia.org/wiki/Dolly_zoom" target="_blank" rel="noopener noreferrer">dolly zoom</a>. 
+                        It is a camera movement also known as the "Vertigo shot", after a famous scene in Hitchcock's Vertigo.
+                    </p>
+                    
+                    <!-- Video embed -->
+                    <div class="video-container">
+                        <div class="video-wrapper">
+                            <iframe
+                                src="https://www.youtube.com/embed/_OO3pqJVLAc"
+                                title="Dolly Zoom examples"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                    </div>
+                    
+                    <p>
+                        The idea is to simultaneously move the camera back while also zooming in. First, come up with a good setting for the shot (e.g., a scene with stuffed animals is one popular choice). Now take a few (4-8 or even more!) still photos while you move the camera back and zoom in, keeping the resulting image roughly the same size. Combine your stills into an animated GIF file—you have a dolly zoom!
+                    </p>
+                    
+                    <!-- Placeholder for GIF -->
+                    <div class="gif-container">
+                        <div class="image-box gif">
+                            <div style="text-align: center;">
+                                <i class="fas fa-camera" style="display: block; margin-bottom: 0.5rem;"></i>
+                                <p style="color: #6b7280; font-weight: 500; margin: 0; font-size: 1rem;">Your Dolly Zoom GIF</p>
+                            </div>
+                        </div>
+                        <p class="image-description">Replace with your animated dolly zoom GIF</p>
+                    </div>
+                    
+                    <!-- Commented analysis section -->
+                    <!--
+                    <div class="analysis-box">
+                        <h3 class="analysis-title">Analysis</h3>
+                        <p class="analysis-content">
+                            Add your thoughts on the dolly zoom effect here...
+                        </p>
+                    </div>
+                    -->
+                </section>
 
-          <section>
-            <h2 className="text-xl font-semibold text-gray-900 mb-6">
-              Deliverables & Submission
-            </h2>
-            <div className="bg-yellow-50 rounded-lg p-6 mb-6">
-              <p className="text-yellow-800 font-medium text-center">
-                Take beautiful photos. Make your webpage visually appealing. Aesthetics matter!
-              </p>
+                <section>
+                    <h2>Deliverables & Submission</h2>
+                    <div class="highlight-box">
+                        <p class="highlight-text">
+                            Take beautiful photos. Make your webpage visually appealing. Aesthetics matter!
+                        </p>
+                    </div>
+                    
+                    <ol>
+                        <li>
+                            <div class="step-content">
+                                <strong>Host your webpage online.</strong> We recommend using GitHub Pages, but any hosting service is acceptable. You may organize your project in any directory structure you prefer.
+                            </div>
+                        </li>
+                        <li>
+                            <div class="step-content">
+                                <strong>Submit your webpage URL to the class gallery.</strong><br>
+                                <a href__="https://forms.gle/55acn3qyebLK6qwN7" target="_blank" rel="noopener noreferrer">
+                                    Google Form <i class="fas fa-external-link-alt"></i>
+                                </a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="step-content">
+                                <strong>Submit a PDF version to Gradescope</strong> (Entry code: <strong>VWX283</strong>)<br>
+                                <span style="font-size: 0.875rem; color: #6b7280; display: block; margin-top: 0.25rem;">
+                                    Print your webpage as a PDF with the URL in the header. This serves as a reference for grading and ensures your submission remains unchanged after the deadline.
+                                </span>
+                            </div>
+                        </li>
+                    </ol>
+                </section>
             </div>
-            
-            <ol className="space-y-4 text-gray-700">
-              <li className="flex gap-3">
-                <span className="flex-shrink-0 w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-sm font-medium">1</span>
-                <div>
-                  <strong>Host your webpage online.</strong> We recommend using GitHub Pages, but any hosting service is acceptable. You may organize your project in any directory structure you prefer.
+
+            <!-- Navigation -->
+            <div class="navigation">
+                <a href__="index.html" class="nav-button">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Portfolio
+                </a>
+                
+                <div class="project-counter">
+                    Project 0 of 5
                 </div>
-              </li>
-              <li className="flex gap-3">
-                <span className="flex-shrink-0 w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-sm font-medium">2</span>
-                <div>
-                  <strong>Submit your webpage URL to the class gallery.</strong>
-                  <br/>
-                  <a 
-                    href="https://forms.gle/55acn3qyebLK6qwN7" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-700 underline mt-1"
-                  >
-                    Google Form <ExternalLink className="w-3 h-3" />
-                  </a>
-                </div>
-              </li>
-              <li className="flex gap-3">
-                <span className="flex-shrink-0 w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-sm font-medium">3</span>
-                <div>
-                  <strong>Submit a PDF version to Gradescope</strong> (Entry code: <strong>VWX283</strong>)
-                  <br/>
-                  <span className="text-sm text-gray-600 mt-1 block">
-                    Print your webpage as a PDF with the URL in the header. This serves as a reference for grading and ensures your submission remains unchanged after the deadline.
-                  </span>
-                </div>
-              </li>
-            </ol>
-          </section>
+            </div>
         </div>
-
-        {/* Navigation */}
-        <div className="flex justify-between items-center">
-          <Link 
-            to={createPageUrl('Home')} 
-            className="inline-flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-900 border border-gray-200 hover:border-gray-300 rounded-lg transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back to Portfolio
-          </Link>
-          
-          <div className="text-sm text-gray-500">
-            Project 0 of 5
-          </div>
-        </div>
-      </main>
-    </div>
-  );
-}
+    </main>
+</body>
+</html>
