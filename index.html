@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tonzu - Portfolio</title>
+    <link href__="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #374151;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 1rem;
+            padding: 3rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            text-align: center;
+        }
+        
+        .avatar {
+            width: 5rem;
+            height: 5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem auto;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        
+        h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            color: #6b7280;
+            font-size: 1.125rem;
+            margin-bottom: 2rem;
+        }
+        
+        .description {
+            color: #374151;
+            line-height: 1.625;
+            margin-bottom: 2.5rem;
+        }
+        
+        .projects-section {
+            border-top: 1px solid #e5e7eb;
+            padding-top: 2rem;
+        }
+        
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 1.5rem;
+        }
+        
+        .project-card {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.2s;
+            text-align: left;
+        }
+        
+        .project-card:hover {
+            background: #f3f4f6;
+            border-color: #d1d5db;
+        }
+        
+        .project-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .project-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            background: #dbeafe;
+            color: #2563eb;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .project-title {
+            font-size: 1.125rem;
+            font-weight: 500;
+            color: #111827;
+            margin: 0;
+        }
+        
+        .project-description {
+            color: #6b7280;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .project-link:hover {
+            color: #1d4ed8;
+        }
+        
+        .social-links {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+        
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #6b7280;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.2s;
+        }
+        
+        .social-link:hover {
+            background: #f3f4f6;
+            color: #374151;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 640px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .card {
+                padding: 2rem;
+            }
+            
+            h1 {
+                font-size: 1.75rem;
+            }
+            
+            .project-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            
+            .social-links {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <!-- Avatar -->
+            <div class="avatar">
+                TT
+            </div>
+            
+            <!-- Main Header -->
+            <h1>Welcome</h1>
+            <p class="subtitle">Student & Developer</p>
+            
+            <!-- Brief Description -->
+            <p class="description">
+                Hello! I'm a student exploring the fascinating world of computer science, 
+                with a particular interest in computer vision and computational photography. 
+                This site showcases my academic projects and learning journey.
+            </p>
+            
+            <!-- Current Projects -->
+            <div class="projects-section">
+                <h2 class="section-title">Current Projects</h2>
+                
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="project-icon">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <h3 class="project-title">CS180: Computer Vision Portfolio</h3>
+                    </div>
+                    <p class="project-description">
+                        A collection of projects from UC Berkeley's CS180 course, exploring computational 
+                        photography, computer vision, and the mathematics behind digital imaging.
+                    </p>
+                    <a href__="180/" class="project-link">
+                        View Portfolio <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Social Links -->
+            <div class="social-links">
+                <a href__="https://github.com/tonzu" target="_blank" rel="noopener noreferrer" class="social-link">
+                    <i class="fab fa-github"></i>
+                    GitHub
+                </a>
+                <!-- Add more social links as needed -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>
