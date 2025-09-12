@@ -352,9 +352,6 @@
                 <section>
                     <h2>Overview</h2>
                     <p>
-                        Sergei Mikhailovich Prokudin-Gorskii (1863-1944) was a pioneer of early color photography. Convinced that color photography was the future, he traveled across the Russian Empire taking thousands of color photographs using a clever technique: recording three exposures of every scene onto a glass plate using red, green, and blue filters.
-                    </p>
-                    <p>
                         The goal of this assignment is to take the digitized glass plate images and automatically produce color images with minimal artifacts. Each digitized plate contains three exposures stacked vertically in <strong>BGR order</strong> (blue at top, green in middle, red at bottom). The challenge is to extract these three color channels, align them properly, and combine them into a single RGB color image.
                     </p>
                 </section>
@@ -366,21 +363,13 @@
                     </p>
                     <ol style="margin-left: 1.5rem; margin-bottom: 1.5rem;">
                         <li style="margin-bottom: 0.5rem;"><strong>Split the image</strong> into three equal parts (B, G, R from top to bottom)</li>
-                        <li style="margin-bottom: 0.5rem;"><strong>Use the blue channel as reference</strong> and align green and red channels to it</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>Use the green channel as reference</strong> and align blue and red channels to it</li>
                         <li style="margin-bottom: 0.5rem;"><strong>Search for best alignment</strong> using normalized cross-correlation (NCC) as the similarity metric</li>
                         <li style="margin-bottom: 0.5rem;"><strong>Apply pyramid search</strong> for large images to handle big displacements efficiently</li>
                     </ol>
                     
                     <p>
-                        For alignment scoring, I use <strong>Normalized Cross-Correlation (NCC)</strong>, which works better than L2 norm for images with different brightness values:
-                    </p>
-                    
-                    <div class="formula-box">
-                        NCC(I₁, I₂) = (I₁/||I₁||) · (I₂/||I₂||)
-                    </div>
-                    
-                    <p>
-                        To avoid edge artifacts during alignment, I crop a small border from each channel before computing the similarity metric, focusing the search on the interior content where channels should match well.
+                        For alignment scoring, I use <strong>Normalized Cross-Correlation (NCC)</strong>, which works better than L2 norm for images with different brightness values. To avoid edge artifacts during alignment, I crop a small border from each channel before computing the similarity metric, focusing the search on the interior content where channels should match well.
                     </p>
                 </section>
 
@@ -393,25 +382,27 @@
                     <h3>Results on Small Images</h3>
                     <div class="image-grid cols-2">
                         <div class="image-placeholder">
-                            <div class="image-box">
-                                <i class="fas fa-image"></i>
-                            </div>
+                            <img src="output_images/out_cathedral.png" alt="cathedral.jpg result" class="image-box" />
                             <h3 class="image-caption">cathedral.jpg</h3>
-                            <p class="image-description">Replace with your cathedral result</p>
                             <div class="offset-display">
-                                G displacement: (dx, dy)<br>
-                                R displacement: (dx, dy)
+                                B displacement: (-5, -2)<br>
+                                R displacement: (7, 1)
                             </div>
                         </div>
                         <div class="image-placeholder">
-                            <div class="image-box">
-                                <i class="fas fa-image"></i>
-                            </div>
+                            <img src="output_images/out_monastery.png" alt="monastery.jpg result" class="image-box" />
                             <h3 class="image-caption">monastery.jpg</h3>
-                            <p class="image-description">Replace with your monastery result</p>
                             <div class="offset-display">
-                                G displacement: (dx, dy)<br>
-                                R displacement: (dx, dy)
+                                B displacement: (3, -2)<br>
+                                R displacement: (6, 1)
+                            </div>
+                        </div>
+                        <div class="image-placeholder">
+                            <img src="output_images/out_tobolsk.png" alt="tobolsk.jpg result" class="image-box" />
+                            <h3 class="image-caption">tobolsk.jpg</h3>
+                            <div class="offset-display">
+                                B displacement: (-3, -3)<br>
+                                R displacement: (4, 1)
                             </div>
                         </div>
                     </div>
@@ -435,73 +426,90 @@
                     <h3>Results on Large Images</h3>
                     <div class="image-grid cols-3">
                         <div class="image-placeholder">
-                            <div class="image-box">
-                                <i class="fas fa-image"></i>
-                            </div>
+                            <img src="output_images/out_church.png" alt="church.tif result" class="image-box" />
                             <h3 class="image-caption">church.tif</h3>
-                            <p class="image-description">Replace with your church result</p>
                             <div class="offset-display">
-                                G: (dx, dy)<br>R: (dx, dy)
+                                B: (-25, -4)<br>R: (33, -8)
                             </div>
                         </div>
                         <div class="image-placeholder">
-                            <div class="image-box">
-                                <i class="fas fa-image"></i>
-                            </div>
+                            <img src="output_images/out_emir.png" alt="emir.tif result" class="image-box" />
                             <h3 class="image-caption">emir.tif</h3>
-                            <p class="image-description">Replace with your emir result</p>
                             <div class="offset-display">
-                                G: (dx, dy)<br>R: (dx, dy)
+                                B: (-48, -24)<br>R: (57, 17)
                             </div>
                         </div>
                         <div class="image-placeholder">
-                            <div class="image-box">
-                                <i class="fas fa-image"></i>
-                            </div>
+                            <img src="output_images/out_harvesters.png" alt="harvesters.tif result" class="image-box" />
                             <h3 class="image-caption">harvesters.tif</h3>
-                            <p class="image-description">Replace with your harvesters result</p>
                             <div class="offset-display">
-                                G: (dx, dy)<br>R: (dx, dy)
+                                B: (-59, -17)<br>R: (64, -3)
                             </div>
                         </div>
                         <div class="image-placeholder">
-                            <div class="image-box">
-                                <i class="fas fa-image"></i>
-                            </div>
+                            <img src="output_images/out_icon.png" alt="icon.tif result" class="image-box" />
                             <h3 class="image-caption">icon.tif</h3>
-                            <p class="image-description">Replace with your icon result</p>
                             <div class="offset-display">
-                                G: (dx, dy)<br>R: (dx, dy)
+                                B: (-41, -18)<br>R: (49, 5)
                             </div>
                         </div>
                         <div class="image-placeholder">
-                            <div class="image-box">
-                                <i class="fas fa-image"></i>
-                            </div>
-                            <h3 class="image-caption">lady.tif</h3>
-                            <p class="image-description">Replace with your lady result</p>
+                            <img src="output_images/out_italil.png" alt="italil.tif result" class="image-box" />
+                            <h3 class="image-caption">italil.tif</h3>
                             <div class="offset-display">
-                                G: (dx, dy)<br>R: (dx, dy)
+                                B: (-38, -21)<br>R: (39, 15)
                             </div>
                         </div>
                         <div class="image-placeholder">
-                            <div class="image-box">
-                                <i class="fas fa-image"></i>
+                            <img src="output_images/out_lastochikino.png" alt="lastochikino.tif result" class="image-box" />
+                            <h3 class="image-caption">lastochikino.tif</h3>
+                            <div class="offset-display">
+                                B: (3, 2)<br>R: (78, -6)
                             </div>
+                        </div>
+                        <div class="image-placeholder">
+                            <img src="output_images/out_lugano.png" alt="lugano.tif result" class="image-box" />
+                            <h3 class="image-caption">lugano.tif</h3>
+                            <div class="offset-display">
+                                B: (-41, 15)<br>R: (53, -13)
+                            </div>
+                        </div>
+                        <div class="image-placeholder">
+                            <img src="output_images/out_melons.png" alt="melons.tif result" class="image-box" />
                             <h3 class="image-caption">melons.tif</h3>
-                            <p class="image-description">Replace with your melons result</p>
                             <div class="offset-display">
-                                G: (dx, dy)<br>R: (dx, dy)
+                                B: (-84, -10)<br>R: (96, 3)
                             </div>
                         </div>
-                    </ol>
-
+                        <div class="image-placeholder">
+                            <img src="output_images/out_self_portrait.png" alt="self_portrait.tif result" class="image-box" />
+                            <h3 class="image-caption">self_portrait.tif</h3>
+                            <div class="offset-display">
+                                B: (-78, -29)<br>R: (98, 8)
+                            </div>
+                        </div>
+                        <div class="image-placeholder">
+                            <img src="output_images/out_siren.png" alt="siren.tif result" class="image-box" />
+                            <h3 class="image-caption">siren.tif</h3>
+                            <div class="offset-display">
+                                B: (-49, 5)<br>R: (47, -19)
+                            </div>
+                        </div>
+                        <div class="image-placeholder">
+                            <img src="output_images/out_three_generations.png" alt="three_generations.tif result" class="image-box" />
+                            <h3 class="image-caption">three_generations.tif</h3>
+                            <div class="offset-display">
+                                B: (-51, -14)<br>R: (59, -2)
+                            </div>
+                        </div>
+                    </div>
+<!-- 
                     <h3>Summary of Displacement Results</h3>
                     <table class="results-table">
                         <thead>
                             <tr>
                                 <th>Image</th>
-                                <th>Green Displacement (x, y)</th>
+                                <th>Blue Displacement (x, y)</th>
                                 <th>Red Displacement (x, y)</th>
                             </tr>
                         </thead>
@@ -547,7 +555,7 @@
                                 <td><code>( , )</code></td>
                             </tr>
                         </tbody>
-                    </table>
+                    </table> -->
                 </section>
 
                 <section>
@@ -557,89 +565,41 @@
                     </p>
                     
                     <div class="image-grid cols-3">
+                    <div class="image-grid cols-3">
                         <div class="image-placeholder">
-                            <div class="image-box">
-                                <i class="fas fa-image"></i>
-                            </div>
-                            <h3 class="image-caption">Your Choice 1</h3>
-                            <p class="image-description">Replace with your additional example</p>
+                            <img src="output_images/out_capri.png" alt="capri.tif result" class="image-box" />
+                            <h3 class="image-caption">capri.tif</h3>
                             <div class="offset-display">
-                                G: (dx, dy)<br>R: (dx, dy)
+                                B: (-31, 16)<br>R: (47, -9)
                             </div>
                         </div>
                         <div class="image-placeholder">
-                            <div class="image-box">
-                                <i class="fas fa-image"></i>
-                            </div>
-                            <h3 class="image-caption">Your Choice 2</h3>
-                            <p class="image-description">Replace with your additional example</p>
+                            <img src="output_images/out_haystack.png" alt="haystack.tif result" class="image-box" />
+                            <h3 class="image-caption">haystack.tif</h3>
                             <div class="offset-display">
-                                G: (dx, dy)<br>R: (dx, dy)
+                                B: (92, 0)<br>R: (16, -9)
                             </div>
                         </div>
                         <div class="image-placeholder">
-                            <div class="image-box">
-                                <i class="fas fa-image"></i>
-                            </div>
-                            <h3 class="image-caption">Your Choice 3</h3>
-                            <p class="image-description">Replace with your additional example</p>
+                            <img src="output_images/out_waterfall.png" alt="waterfall.tif result" class="image-box" />
+                            <h3 class="image-caption">waterfall.tif</h3>
                             <div class="offset-display">
-                                G: (dx, dy)<br>R: (dx, dy)
+                                B: (-14, 2)<br>R: (67, -1)
                             </div>
                         </div>
                     </div>
                 </section>
 
-                <!-- Bells and Whistles section (commented out for now) -->
-                <!--
-                <section>
-                    <h2>Bells and Whistles</h2>
-                    <p>
-                        I implemented the following enhancements:
-                    </p>
-                    
-                    <h3>Automatic Cropping</h3>
-                    <p>Description of your cropping approach...</p>
-                    
-                    <h3>Better Features</h3>
-                    <p>Description of using edge detection or gradients...</p>
-                    
-                    <h3>Automatic Contrasting</h3>
-                    <p>Description of your contrast enhancement...</p>
-                </section>
-                -->
-
                 <section>
                     <h2>Problems Encountered</h2>
                     <p>
-                        The main challenge was handling the edge artifacts that occur during alignment. Initial attempts using the full image for similarity computation led to poor results because the borders dominated the scoring function. The solution was to crop a small margin before computing NCC, focusing the search on the interior content where channels should genuinely match.
+                        The main challenge was handling the edge artifacts that occur during alignment. Initial attempts using the full image for similarity computation led to poor results because the borders dominated the scoring function. The solution was to crop a small margin before computing NCC, focusing the search on the interior content where channels should genuinely match. For the larger images, I stuck with a 30% border crop, which worked well across the board.
                     </p>
                     <p>
-                        Another issue was with the <strong>emir.tif</strong> image, where different color channels have very different brightness values. The normalized cross-correlation metric handled this better than simple L2 distance, as it's more robust to brightness differences between channels.
+                        Even after most images became aligned, <code>emir.tif</code> was giving me a hard time. I tried playing with the parameters, and increasing the number of levels definitely helped, but the offset was still pretty far off even though I knew my functions were correct since everything else was fine. I then stumbled upon a tip to change the reference channel from blue to green. My understanding is that green was more aligned with the other two channels to begin with, so using it as reference made the search easier. After that, <code>emir.tif</code> finally worked, and I decided to stick with green as the reference channel for all images.
                     </p>
-                    <!--
-                    <p>
-                        [Add any specific problems you encountered and how you solved them]
-                    </p>
-                    -->
-                </section>
 
-                <section>
-                    <h2>Conclusion</h2>
-                    <p>
-                        This project successfully demonstrates automated colorization of historical glass plate photographs. The key insights were:
-                    </p>
-                    <ul style="margin-left: 1.5rem; margin-bottom: 1.5rem;">
-                        <li style="margin-bottom: 0.5rem;">Using NCC as similarity metric handles brightness differences between color channels</li>
-                        <li style="margin-bottom: 0.5rem;">Cropping borders during alignment prevents edge artifacts from dominating the search</li>
-                        <li style="margin-bottom: 0.5rem;">Pyramid search makes large image alignment computationally feasible</li>
-                        <li style="margin-bottom: 0.5rem;">Simple translation is sufficient for most historical plates</li>
-                    </ul>
-                    <p>
-                        The resulting colorized images provide a fascinating glimpse into the Russian Empire of over a century ago, bringing Prokudin-Gorskii's vision to life through modern computational techniques.
-                    </p>
                 </section>
-            </div>
 
             <!-- Navigation -->
             <div class="navigation">
