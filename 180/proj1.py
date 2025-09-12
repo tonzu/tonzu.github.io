@@ -9,40 +9,6 @@ import skimage.io as skio
 import os
 import cv2
 
-# # name of the input file
-# imname = 'cathedral.jpg'
-
-# # read in the image
-# im = skio.imread(imname)
-
-# # convert to double (might want to do this later on to save memory)    
-# im = sk.img_as_float(im)
-    
-# # compute the height of each part (just 1/3 of total)
-# height = np.floor(im.shape[0] / 3.0).astype(np.int)
-
-# # separate color channels
-# b = im[:height]
-# g = im[height: 2*height]
-# r = im[2*height: 3*height]
-
-# # align the images
-# # functions that might be useful for aligning the images include:
-# # np.roll, np.sum, sk.transform.rescale (for multiscale)
-
-# ### ag = align(g, b)
-# ### ar = align(r, b)
-# # create a color image
-# im_out = np.dstack([ar, ag, b])
-
-# # save the image
-# fname = '/out_path/out_fname.jpg'
-# skio.imsave(fname, im_out)
-
-# # display the image
-# skio.imshow(im_out)
-# skio.show()
-
 # Helpers
 
 def split_bgr(im):
@@ -61,19 +27,10 @@ def center_crop(im, crop_frac):
     return im[ch:h-ch, cw:w-cw]
 
 def downsample(im):
-    # k = np.array([1, 2, 1], np.float32) / 4.0
-    # p = np.pad(im, ((1, 1), (1, 1)), mode='reflect')
-    # h = (p[:-2, 1:-1]*k[0] + p[1:-1, 1:-1]*k[1] + p[2:, 1:-1]*k[2])
-    # v = (h[1:-1, :-2]*k[0] + h[1:-1, 1:-1]*k[1] + h[1:-1, 2:]*k[2])
-    # return v[::2, ::2]
-    # print(im.shape, im.dtype, im.ndim, im.size)
 
     im = np.asarray(im, dtype=np.float32)
     out = sk.transform.rescale(im, 0.5, anti_aliasing=True, preserve_range=True)
     return out.astype(np.float32)
-    # print("Downsampling shape:", im.shape, "dtype:", im.dtype, "type:", type(im))
-    # im = np.ascontiguousarray(im, dtype=np.float32)
-    # return cv2.resize(im, (int(im.shape[1] // 2), int(im.shape[0] // 2)), interpolation=cv2.INTER_AREA)
 
 def get_overlap(ref, img, dx, dy):
     h, w = ref.shape
@@ -160,8 +117,8 @@ def align(moving, reference, use_pyramid=True, metric='ncc', base_radius=15, bor
     return aligned, dx, dy
 
 if __name__ == '__main__':
-    input_dirs = ['cs180_proj1_data, cs180_proj1_own_data']  # Replace with your actual folder names
-    output_dir = 'output_images'         # Output folder
+    input_dirs = ['cs180_proj1_data', 'cs180_proj1_own_data']  
+    output_dir = 'output_images'         
 
     os.makedirs(output_dir, exist_ok=True)
 

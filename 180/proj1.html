@@ -614,10 +614,10 @@
                 <section>
                     <h2>Problems Encountered</h2>
                     <p>
-                        The main challenge was handling the edge artifacts that occur during alignment. Initial attempts using the full image for similarity computation led to poor results because the borders dominated the scoring function. The solution was to crop a margin before computing NCC, focusing the search on the interior content where channels should genuinely match. For the larger images, I stuck with a 30% border crop, which worked well across the board.
+                        The main challenge was handling the edge artifacts that occur during alignment. Initial attempts using the full image for similarity computation led to poor results because the borders dominated the scoring function. The solution was to crop a margin before computing NCC, focusing the search on the interior content where channels should genuinely match. For the larger images, I stuck with an aggressive 30% border crop, which worked well across the board. This also helped to reduce the runtime. 
                     </p>
                     <p>
-                        Even after most images became aligned, <code>emir.tif</code> was giving me a hard time. I tried playing with the parameters, and increasing the number of levels definitely helped, but the offset was still pretty far off even though I knew my functions were correct since everything else was fine. I then stumbled upon a tip to change the reference channel from blue to green. My understanding is that green was more aligned with the other two channels to begin with, so using it as reference made the search easier. After that, <code>emir.tif</code> finally worked, and I decided to stick with green as the reference channel for all images.
+                        Even after most images became aligned, <code>emir.tif</code> was giving me a hard time. I tried playing with the parameters, and increasing the number of levels in the pyramid definitely helped, but the offset was still pretty far off even though I knew my functions were correct since everything else was fine. I then stumbled upon a tip to change the reference channel from blue to green. My understanding is that green was more aligned with the other two channels to begin with, so using it as reference made the search easier. After that, <code>emir.tif</code> finally worked, and I decided to stick with green as the reference channel for all images.
                     </p>
 
                 </section>
