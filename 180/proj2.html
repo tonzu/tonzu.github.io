@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project 2: Fun with Filters and Frequencies! | CS180</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Additional styles for Project 2 layout */
+        .project-layout {
+            display: flex;
+            gap: 2.5rem;
+            align-items: flex-start;
+        }
+        .content-column {
+            flex: 3;
+            min-width: 0; /* Prevents flexbox overflow */
+        }
+        .toc-column {
+            flex: 1;
+            position: sticky;
+            top: 1.5rem;
+        }
+        .toc {
+            border-left: 1px solid #e5e7eb;
+            padding-left: 1.5rem;
+        }
+        .toc h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #111827;
+        }
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            space-y: 0.5rem;
+        }
+        .toc li a {
+            color: #6b7280;
+            text-decoration: none;
+            font-size: 0.875rem;
+            display: block;
+            padding: 0.25rem 0;
+            transition: color 0.2s;
+        }
+        .toc li a:hover {
+            color: #111827;
+        }
+        .toc .sub-list {
+            padding-left: 1rem;
+            margin-top: 0.5rem;
+        }
+        
+        @media (max-width: 1024px) {
+            .project-layout {
+                flex-direction: column;
+            }
+            .toc-column {
+                position: static;
+                width: 100%;
+                margin-bottom: 2rem;
+            }
+            .toc {
+                border-left: none;
+                border-top: 1px solid #e5e7eb;
+                padding-left: 0;
+                padding-top: 1.5rem;
+            }
+        }
+
+        /* Styles for code blocks */
+        pre {
+            background: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            overflow-x: auto;
+            font-size: 0.875rem;
+            margin-bottom: 1.5rem;
+        }
+        code {
+            font-family: 'Courier New', monospace;
+        }
+        .image-grid-3x3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+        }
+        .freq-analysis-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .freq-hybrid-center {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="back-button" aria-label="Back to portfolio">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <div class="header-info">
+                    <div class="project-icon"><i class="fas fa-wave-square"></i></div>
+                    <div>
+                        <h1 class="project-title">Project 2: Fun with Filters and Frequencies!</h1>
+                        <p class="project-course">CS180: Intro to Computer Vision and Computational Photography</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="project-layout">
+            <div class="toc-column">
+                <nav class="toc">
+                    <h3>Table of Contents</h3>
+                    <ul>
+                        <li><a href="#part1">Part 1: Fun with Filters</a>
+                            <ul class="sub-list">
+                                <li><a href="#part1-1">1.1: Convolutions</a></li>
+                                <li><a href="#part1-2">1.2: Finite Difference</a></li>
+                                <li><a href="#part1-3">1.3: DoG Filter</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#part2">Part 2: Fun with Frequencies</a>
+                             <ul class="sub-list">
+                                <li><a href="#part2-1">2.1: Sharpening</a></li>
+                                <li><a href="#part2-2">2.2: Hybrid Images</a></li>
+                                <li><a href="#part2-3">2.3: Stacks</a></li>
+                                <li><a href="#part2-4">2.4: Blending</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="content-column">
+                <div class="content-card">
+                    <div class="due-date">
+                        <div class="due-badge"><i class="fas fa-calendar-alt"></i><span>Due: Sep 26, 2025 at 11:59 PM</span></div>
+                    </div>
+
+                    <!-- Part 1 -->
+                    <section id="part1">
+                        <h2>Part 1: Fun with Filters</h2>
+                        
+                        <section id="part1-1">
+                            <h3>1.1: Convolutions from Scratch!</h3>
+                            <p>Implemented convolution with four loops and two loops, and compared against `scipy.signal.convolve2d`. Zero-padding was used.</p>
+                            <h4>4-Loop Convolution Code:</h4>
+                            <pre><code>
+    def convolve_4_loops(image, kernel):
+        # ... your 4-loop code snippet here ...
+                            </code></pre>
+                             <h4>2-Loop Convolution Code:</h4>
+                            <pre><code>
+    def convolve_2_loops(image, kernel):
+        # ... your 2-loop code snippet here ...
+                            </code></pre>
+                            <div class="image-grid image-grid-3x3">
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>4-loop: Box</figcaption></figure>
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>4-loop: Dx</figcaption></figure>
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>4-loop: Dy</figcaption></figure>
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>2-loop: Box</figcaption></figure>
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>2-loop: Dx</figcaption></figure>
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>2-loop: Dy</figcaption></figure>
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Scipy: Box</figcaption></figure>
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Scipy: Dx</figcaption></figure>
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Scipy: Dy</figcaption></figure>
+                            </div>
+                        </section>
+                        
+                        <section id="part1-2">
+                            <h3>1.2: Finite Difference Operator</h3>
+                            <p>Partial derivatives were computed using finite difference operators Dx and Dy, followed by the gradient magnitude and binarized edge image.</p>
+                            <div class="image-grid cols-3">
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Original</figcaption></figure>
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Derivative (Dx)</figcaption></figure>
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Derivative (Dy)</figcaption></figure>
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Gradient Magnitude</figcaption></figure>
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Binarized Edges</figcaption></figure>
+                            </div>
+                        </section>
+
+                        <section id="part1-3">
+                            <h3>1.3: Derivative of Gaussian (DoG) Filter</h3>
+                            <p>To reduce noise, a Gaussian filter was applied before differentiation. This was compared with a direct Derivative of Gaussian (DoG) filter.</p>
+                            <h4>DoG Filters</h4>
+                            <div class="image-grid cols-3">
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Gaussian Kernel</figcaption></figure>
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>DoG (Dx)</figcaption></figure>
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>DoG (Dy)</figcaption></figure>
+                            </div>
+                            <h4>Method 1: Blur then Differentiate</h4>
+                            <div class="image-grid cols-4">
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Dx of Blurred</figcaption></figure>
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Dy of Blurred</figcaption></figure>
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Gradient Magnitude</figcaption></figure>
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Edges</figcaption></figure>
+                            </div>
+                             <h4>Method 2: Direct DoG Convolution</h4>
+                            <div class="image-grid cols-4">
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>DoG Dx Result</figcaption></figure>
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>DoG Dy Result</figcaption></figure>
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Gradient Magnitude</figcaption></figure>
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Edges</figcaption></figure>
+                            </div>
+                        </section>
+                    </section>
+                    
+                    <hr class="section-divider">
+
+                    <!-- Part 2 -->
+                    <section id="part2">
+                        <h2>Part 2: Fun with Frequencies!</h2>
+                        
+                        <section id="part2-1">
+                            <h3>2.1: Image "Sharpening"</h3>
+                            <p>The unsharp masking technique was used to sharpen images by amplifying high frequencies.</p>
+                            <h4>Taj Mahal Sharpening Process</h4>
+                            <div class="image-grid cols-4">
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Original</figcaption></figure>
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Blurred (Low Pass)</figcaption></figure>
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>High Frequencies</figcaption></figure>
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Sharpened</figcaption></figure>
+                            </div>
+                            <h4>Varying Sharpness Levels</h4>
+                            <div class="image-grid cols-4">
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Level 1</figcaption></figure>
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Level 2</figcaption></figure>
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Level 3</figcaption></figure>
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Level 4</figcaption></figure>
+                            </div>
+                            <h4>Blurring and Re-sharpening</h4>
+                            <div class="image-grid cols-3">
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Sharpened</figcaption></figure>
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Then Blurred</figcaption></figure>
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Then Sharpened Again</figcaption></figure>
+                            </div>
+                            <h4>Additional Example</h4>
+                            <div class="image-grid cols-2">
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Original Image</figcaption></figure>
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Sharpened Result</figcaption></figure>
+                            </div>
+                        </section>
+
+                        <section id="part2-2">
+                            <h3>2.2: Hybrid Images</h3>
+                            <p>Hybrid images were created by blending the high frequencies of one image with the low frequencies of another.</p>
+                            <h4>Example 1: Main Result with Analysis</h4>
+                            <div class="image-grid cols-4">
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Original 1</figcaption></figure>
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Original 2</figcaption></figure>
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Aligned</figcaption></figure>
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Hybrid Result</figcaption></figure>
+                            </div>
+                            <h4>Distance Simulation</h4>
+                            <div class="image-grid cols-4">
+                               <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Scale 1</figcaption></figure>
+                               <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Scale 2</figcaption></figure>
+                               <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Scale 3</figcaption></figure>
+                               <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Scale 4</figcaption></figure>
+                            </div>
+                            <h4>Frequency Analysis</h4>
+                            <div class="freq-analysis-grid">
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>FFT of Original 1</figcaption></figure>
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>FFT of Original 2</figcaption></figure>
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>FFT of Filtered 1</figcaption></figure>
+                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>FFT of Filtered 2</figcaption></figure>
+                                <div class="freq-hybrid-center">
+                                    <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>FFT of Hybrid Image</figcaption></figure>
+                                </div>
+                            </div>
+                            <h4>Example 2</h4>
+                            <div class="image-grid cols-3">
+                               <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Original 1</figcaption></figure>
+                               <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Original 2</figcaption></figure>
+                               <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Hybrid Result</figcaption></figure>
+                            </div>
+                            <h4>Example 3</h4>
+                             <div class="image-grid cols-3">
+                               <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Original 1</figcaption></figure>
+                               <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Original 2</figcaption></figure>
+                               <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Hybrid Result</figcaption></figure>
+                            </div>
+                        </section>
+
+                        <section id="part2-3">
+                            <h3>2.3: Gaussian and Laplacian Stacks</h3>
+                             <p>Gaussian and Laplacian stacks were implemented to prepare for multi-resolution blending.</p>
+                             <h4>Apple Stacks</h4>
+                             <div class="image-grid cols-5">
+                                 <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>G1</figcaption></figure>
+                                 <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>G2</figcaption></figure>
+                                 <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>G3</figcaption></figure>
+                                 <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>G4</figcaption></figure>
+                                 <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>G5</figcaption></figure>
+                                 <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>L1</figcaption></figure>
+                                 <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>L2</figcaption></figure>
+                                 <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>L3</figcaption></figure>
+                                 <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>L4</figcaption></figure>
+                                 <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>L5</figcaption></figure>
+                             </div>
+                             <h4>Orange Stacks</h4>
+                              <div class="image-grid cols-5">
+                                 <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>G1</figcaption></figure>
+                                 <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>G2</figcaption></figure>
+                                 <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>G3</figcaption></figure>
+                                 <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>G4</figcaption></figure>
+                                 <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>G5</figcaption></figure>
+                                 <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>L1</figcaption></figure>
+                                 <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>L2</figcaption></figure>
+                                 <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>L3</figcaption></figure>
+                                 <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>L4</figcaption></figure>
+                                 <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>L5</figcaption></figure>
+                             </div>
+                             <h4>Laplacian Blending Details (Oraple)</h4>
+                             <div class="image-grid image-grid-3x3">
+                                 <!-- Row 1 -->
+                                 <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Apple L1</figcaption></figure>
+                                 <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Orange L1</figcaption></figure>
+                                 <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Combined L1</figcaption></figure>
+                                 <!-- Row 2 -->
+                                 <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Apple L2</figcaption></figure>
+                                 <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Orange L2</figcaption></figure>
+                                 <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Combined L2</figcaption></figure>
+                                 <!-- Row 3 -->
+                                 <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Apple L3</figcaption></figure>
+                                 <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Orange L3</figcaption></figure>
+                                 <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Combined L3</figcaption></figure>
+                                 <!-- Row 4 -->
+                                 <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Apple L4</figcaption></figure>
+                                 <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Orange L4</figcaption></figure>
+                                 <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Combined L4</figcaption></figure>
+                                 <!-- Row 5 -->
+                                 <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Apple L5</figcaption></figure>
+                                 <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Orange L5</figcaption></figure>
+                                 <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Combined Result</figcaption></figure>
+                             </div>
+                        </section>
+
+                        <section id="part2-4">
+                            <h3>2.4: Multiresolution Blending</h3>
+                            <p>Creative blends were produced using the multi-resolution technique with various masks.</p>
+                            <h4>Blend 1</h4>
+                            <div class="image-grid cols-3">
+                               <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Original 1</figcaption></figure>
+                               <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Original 2</figcaption></figure>
+                               <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Blended Result</figcaption></figure>
+                            </div>
+                            <h4>Blend 2 (Irregular Mask)</h4>
+                            <div class="image-grid cols-3">
+                               <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Original 1</figcaption></figure>
+                               <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Original 2</figcaption></figure>
+                               <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Blended Result</figcaption></figure>
+                            </div>
+                            <h4>Blend 3</h4>
+                            <div class="image-grid cols-3">
+                               <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Original 1</figcaption></figure>
+                               <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Original 2</figcaption></figure>
+                               <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Blended Result</figcaption></figure>
+                            </div>
+                        </section>
+                    </section>
+                </div>
+
+                <!-- Navigation -->
+                <div class="navigation-footer">
+                    <a href="proj1.html" class="nav-button prev">
+                        <i class="fas fa-arrow-left"></i>
+                        <div>
+                            <span>Previous Project</span>
+                            <strong>Project 1: Colorization</strong>
+                        </div>
+                    </a>
+                    <a href="index.html" class="nav-button home">
+                        <i class="fas fa-th-large"></i>
+                        <span>All Projects</span>
+                    </a>
+                    <a href="#" class="nav-button next disabled">
+                        <div>
+                            <span>Next Project</span>
+                            <strong>Project 3: TBD</strong>
+                        </div>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

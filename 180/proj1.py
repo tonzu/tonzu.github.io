@@ -44,7 +44,7 @@ def get_overlap(ref, img, dx, dy):
 
 # Metrics
 
-def ssd(im1, im2):
+def ssd(im1, im2): # sum of squared differences, works the same way as L2 norm
     return -np.mean((im1 - im2)**2)
 
 def ncc(im1, im2):
@@ -117,6 +117,7 @@ def align(moving, reference, use_pyramid=True, metric='ncc', base_radius=15, bor
     return aligned, dx, dy
 
 if __name__ == '__main__':
+    # gets all images in the input directory, aligns them, and saves to output directory
     input_dirs = ['cs180_proj1_data', 'cs180_proj1_own_data']  
     output_dir = 'output_images'         
 
