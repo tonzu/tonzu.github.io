@@ -206,7 +206,7 @@
                         
                         <section id="part1-1">
                             <h3>1.1: Convolutions from Scratch!</h3>
-                            <p>Implemented convolution with four loops and two loops, and compared against `scipy.signal.convolve2d`. Zero-padding was used.</p>
+                            <p>Implemented convolution with four loops and two loops, and compared against `scipy.signal.convolve2d`. Zero-padding was used. The results from both of my implementations were consistent with the SciPy results, suggesting that my implementations are producing expected results. The main difference is in runtime, with the 2-loop version being faster than the 4-loop version, but not as fast as `scipy.signal.convolve2d`.</p>
                             <h4>Helpers</h4>
                             <pre><code>
     def pad_with_zeros(img, pad_h, pad_w):
@@ -286,19 +286,19 @@
                         
                         <section id="part1-2">
                             <h3>1.2: Finite Difference Operator</h3>
-                            <p>Partial derivatives were computed using finite difference operators Dx and Dy, followed by the gradient magnitude and binarized edge image.</p>
+                            <p>Partial derivatives were computed using finite difference operators Dx and Dy, followed by the gradient magnitude and binarized edge image. For the threshold, I went with a value that would minimize the noise.</p>
                             <div class="image-grid cols-3">
                                 <figure><div class="image-placeholder"><img src="proj2/cameraman.png" alt="Original"></div><figcaption>Original</figcaption></figure>
                                 <figure><div class="image-placeholder"><img src="proj2/cam_dx.png" alt="Derivative (Dx)"></div><figcaption>Derivative (Dx)</figcaption></figure>
                                 <figure><div class="image-placeholder"><img src="proj2/cam_dy.png" alt="Derivative (Dy)"></div><figcaption>Derivative (Dy)</figcaption></figure>
                                 <figure><div class="image-placeholder"><img src="proj2/cam_gradmag.png" alt="Gradient Magnitude"></div><figcaption>Gradient Magnitude</figcaption></figure>
-                                <figure><div class="image-placeholder"><img src="proj2/cam_edges.png" alt="Binarized Edges"></div><figcaption>Binarized Edges</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/cam_edges.png" alt="Binarized Edges"></div><figcaption>Binarized Edges (tau=0.27)</figcaption></figure>
                             </div>
                         </section>
 
                         <section id="part1-3">
                             <h3>1.3: Derivative of Gaussian (DoG) Filter</h3>
-                            <p>To reduce noise, a Gaussian filter was applied before differentiation. This was compared with a direct Derivative of Gaussian (DoG) filter.</p>
+                            <p>To reduce noise, a Gaussian filter was applied before differentiation. This was compared with a direct Derivative of Gaussian (DoG) filter. Between the two methods, the final edges look the same even though the intermediate results differ. It should be noted that both of these results are better than the edge result we had in 1.2.</p>
                             <h4>DoG Filters</h4>
                             <div class="image-grid cols-3">
                                 <figure><div class="image-placeholder"><img src="proj2/gaussian.png"></div><figcaption>Gaussian Kernel</figcaption></figure>
@@ -310,14 +310,14 @@
                                 <figure><div class="image-placeholder"><img src="proj2/Ix_blur_then_dx.png"></div><figcaption>Dx of Blurred</figcaption></figure>
                                 <figure><div class="image-placeholder"><img src="proj2/Iy_blur_then_dy.png"></div><figcaption>Dy of Blurred</figcaption></figure>
                                 <figure><div class="image-placeholder"><img src="proj2/blur_then_diff_gradmag.png"></div><figcaption>Gradient Magnitude</figcaption></figure>
-                                <figure><div class="image-placeholder"><img src="proj2/blur_then_diff_edges.png"></div><figcaption>Edges</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/blur_then_diff_edges.png"></div><figcaption>Edges (tau=0.06)</figcaption></figure>
                             </div>
                              <h4>Method 2: Direct DoG Convolution</h4>
                             <div class="image-grid cols-4">
                                 <figure><div class="image-placeholder"><img src="proj2/Ix_dog_once.png"></div><figcaption>DoG Dx Result</figcaption></figure>
                                 <figure><div class="image-placeholder"><img src="proj2/Iy_dog_once.png"></div><figcaption>DoG Dy Result</figcaption></figure>
                                 <figure><div class="image-placeholder"><img src="proj2/dog_gradmag.png"></div><figcaption>Gradient Magnitude</figcaption></figure>
-                                <figure><div class="image-placeholder"><img src="proj2/dog_edges.png"></div><figcaption>Edges</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/dog_edges.png"></div><figcaption>Edges (tau=0.06)</figcaption></figure>
                             </div>
                         </section>
                     </section>
@@ -330,7 +330,7 @@
                         
                         <section id="part2-1">
                             <h3>2.1: Image "Sharpening"</h3>
-                            <p>The unsharp masking technique was used to sharpen images by amplifying high frequencies.</p>
+                            <p>The unsharp masking technique was used to sharpen images by amplifying high frequencies. I first blur the image with a Gaussian low-pass filter, subtract that from the original to get the high-frequency component, then add a scaled version back. As seen in varying the sharpness levels, the effect can be quite pronounced when we increase the alpha parameter. <br> When comparing the sharpened image to the blurred then resharpened image, it makes sense that we are unable to perfectly recover the original image, as some high-frequency details are lost in the initial blurring step.</p>
                             <h4>Taj Mahal Sharpening Process</h4>
                             <div class="image-grid cols-4">
                                 <figure><div class="image-placeholder"><img src="proj2/taj_original_color.png"></div><figcaption>Original</figcaption></figure>
@@ -360,7 +360,7 @@
 
                         <section id="part2-2">
                             <h3>2.2: Hybrid Images</h3>
-                            <p>Hybrid images were created by blending the high frequencies of one image with the low frequencies of another.</p>
+                            <p>Hybrid images were created by blending the high frequencies of one image with the low frequencies of another after aligning them in the frequency domain. The distance scaling was applied to simulate different viewing distances to show how the perception of the image changes with depth. <br> I hope you find my motobike and my fish submarine cool too!</p>
                             <h4>Example 1: Main Result with Analysis</h4>
                             <div class="image-grid cols-4">
                                 <figure><div class="image-placeholder"><img src="proj2/DerekPicture.jpg"></div><figcaption>Original Derek</figcaption></figure>
@@ -401,7 +401,7 @@
 
                         <section id="part2-3">
                             <h3>2.3: Gaussian and Laplacian Stacks</h3>
-                             <p>Gaussian and Laplacian stacks were implemented to prepare for multi-resolution blending.</p>
+                             <p>Gaussian and Laplacian stacks were implemented to prepare for multi-resolution blending. The Gaussian stack is built by progressively blurring the image, while the Laplacian stack is derived from the differences between consecutive Gaussian levels, representing the band-pass filtered versions of the image.</p>
                              <h4>Apple Stacks</h4>
                              <div class="image-grid cols-5">
                                  <figure><div class="image-placeholder"><img src="proj2/apple_gaussian_level_0.png"></div><figcaption>G1</figcaption></figure>
@@ -459,7 +459,7 @@
 
                         <section id="part2-4">
                             <h3>2.4: Multiresolution Blending</h3>
-                            <p>Creative blends were produced using the multi-resolution technique with various masks.</p>
+                            <p>Creative blends were produced using the multi-resolution technique with various masks. The apple and orange just used a linear gradient mask, but the hands and feet used a polygon mask, and the Mona Lisa combined with my face used an elliptical mask.</p>
                             <h4>Blend 1</h4>
                             <div class="image-grid cols-3">
                                <figure><div class="image-placeholder"><img src="proj2/apple.jpeg"></div><figcaption>Apple</figcaption></figure>
