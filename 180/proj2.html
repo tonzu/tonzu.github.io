@@ -69,6 +69,14 @@
             text-align: center;
         }
 
+        /* Uniform image sizing: scale smaller images up to a consistent box */
+        .image-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            max-height: 100% !important; /* override global caps inside placeholders */
+        }
+
         /* Generic image grid helpers to match other pages */
         .image-grid { display: grid; gap: 1rem; }
         .image-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
@@ -268,10 +276,10 @@
                             <p>Partial derivatives were computed using finite difference operators Dx and Dy, followed by the gradient magnitude and binarized edge image.</p>
                             <div class="image-grid cols-3">
                                 <figure><div class="image-placeholder"><img src="proj2/cameraman.png" alt="Original"></div><figcaption>Original</figcaption></figure>
-                                <figure><div class="image-placeholder"><img src="proj2/cameraman_dx.png" alt="Derivative (Dx)"></div><figcaption>Derivative (Dx)</figcaption></figure>
-                                <figure><div class="image-placeholder"><img src="proj2/cameraman_dy.png" alt="Derivative (Dy)"></div><figcaption>Derivative (Dy)</figcaption></figure>
-                                <figure><div class="image-placeholder"><img src="proj2/cameraman_gradient.png" alt="Gradient Magnitude"></div><figcaption>Gradient Magnitude</figcaption></figure>
-                                <figure><div class="image-placeholder"><img src="proj2/cameraman_edges.png" alt="Binarized Edges"></div><figcaption>Binarized Edges</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/cam_dx.png" alt="Derivative (Dx)"></div><figcaption>Derivative (Dx)</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/cam_dy.png" alt="Derivative (Dy)"></div><figcaption>Derivative (Dy)</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/cam_gradmag.png" alt="Gradient Magnitude"></div><figcaption>Gradient Magnitude</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/cam_edges.png" alt="Binarized Edges"></div><figcaption>Binarized Edges</figcaption></figure>
                             </div>
                         </section>
 
@@ -281,20 +289,20 @@
                             <h4>DoG Filters</h4>
                             <div class="image-grid cols-3">
                                 <figure><div class="image-placeholder"><img src="proj2/gaussian.png"></div><figcaption>Gaussian Kernel</figcaption></figure>
-                                <figure><div class="image-placeholder"><img src="proj2/dog_dx.png"></div><figcaption>DoG (Dx)</figcaption></figure>
-                                <figure><div class="image-placeholder"><img src="proj2/dog_dy.png"></div><figcaption>DoG (Dy)</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/dog_x.png"></div><figcaption>DoG (Dx)</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/dog_y.png"></div><figcaption>DoG (Dy)</figcaption></figure>
                             </div>
                             <h4>Method 1: Blur then Differentiate</h4>
                             <div class="image-grid cols-4">
-                                <figure><div class="image-placeholder"><img src="proj2/lx_blur_then_dx.png"></div><figcaption>Dx of Blurred</figcaption></figure>
-                                <figure><div class="image-placeholder"><img src="proj2/lx_blur_then_dy.png"></div><figcaption>Dy of Blurred</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/Ix_blur_then_dx.png"></div><figcaption>Dx of Blurred</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/Iy_blur_then_dy.png"></div><figcaption>Dy of Blurred</figcaption></figure>
                                 <figure><div class="image-placeholder"><img src="proj2/blur_then_diff_gradmag.png"></div><figcaption>Gradient Magnitude</figcaption></figure>
                                 <figure><div class="image-placeholder"><img src="proj2/blur_then_diff_edges.png"></div><figcaption>Edges</figcaption></figure>
                             </div>
                              <h4>Method 2: Direct DoG Convolution</h4>
                             <div class="image-grid cols-4">
-                                <figure><div class="image-placeholder"><img src="proj2/lx_dog_once.png"></div><figcaption>DoG Dx Result</figcaption></figure>
-                                <figure><div class="image-placeholder"><img src="proj2/ly_dog_once.png"></div><figcaption>DoG Dy Result</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/Ix_dog_once.png"></div><figcaption>DoG Dx Result</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/Iy_dog_once.png"></div><figcaption>DoG Dy Result</figcaption></figure>
                                 <figure><div class="image-placeholder"><img src="proj2/dog_gradmag.png"></div><figcaption>Gradient Magnitude</figcaption></figure>
                                 <figure><div class="image-placeholder"><img src="proj2/dog_edges.png"></div><figcaption>Edges</figcaption></figure>
                             </div>
@@ -333,7 +341,7 @@
                             <h4>Additional Example</h4>
                             <div class="image-grid cols-2">
                                 <figure><div class="image-placeholder"><img src="proj2/self_original_color.png"></div><figcaption>Original Image</figcaption></figure>
-                                <figure><div class="image-placeholder"><img src="proj2/self_sharpened_alpha_5_color.png"><figcaption>Sharpened Result</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/self_sharpened_alpha_5_color.png" /></div><figcaption>Sharpened Result</figcaption></figure>
                             </div>
                         </section>
 
@@ -358,8 +366,8 @@
                             <div class="freq-analysis-grid">
                                 <figure><div class="image-placeholder"><img src="proj2/fft_derek.png"></div><figcaption>FFT of Original 1</figcaption></figure>
                                 <figure><div class="image-placeholder"><img src="proj2/fft_nutmeg.png"></div><figcaption>FFT of Original 2</figcaption></figure>
-                                <figure><div class="image-placeholder"><img src="proj2/fft_derek_filtered.png"><figcaption>FFT of Filtered 1</figcaption></figure>
-                                <figure><div class="image-placeholder"><img src="proj2/fft_nutmeg_filtered.png"><figcaption>FFT of Filtered 2</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/fft_derek_filtered.png" /></div><figcaption>FFT of Filtered 1</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/fft_nutmeg_filtered.png" /></div><figcaption>FFT of Filtered 2</figcaption></figure>
                                 <div class="freq-hybrid-center">
                                     <figure><div class="image-placeholder"><img src="proj2/fft_hybrid.png"></div><figcaption>FFT of Hybrid Image</figcaption></figure>
                                 </div>
