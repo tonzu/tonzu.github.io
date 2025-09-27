@@ -112,7 +112,7 @@
                     <div class="project-icon"><i class="fas fa-wave-square"></i></div>
                     <div>
                         <h1 class="project-title">Project 2: Fun with Filters and Frequencies!</h1>
-                        <p class="project-course">CS180: Intro to Computer Vision and Computational Photography</p>
+                        <p class="project-course">CS180 • Fall 2025</p>
                     </div>
                 </div>
             </div>
@@ -157,26 +157,70 @@
                         <section id="part1-1">
                             <h3>1.1: Convolutions from Scratch!</h3>
                             <p>Implemented convolution with four loops and two loops, and compared against `scipy.signal.convolve2d`. Zero-padding was used.</p>
+                            <h4>Helpers</h4>
+                            <pre><code>
+    def pad_with_zeros(img, pad_h, pad_w):
+        H, W = img.shape
+        out = np.zeros((H + 2*pad_h, W + 2*pad_w), dtype=np.float64)
+        out[pad_h:pad_h+H, pad_w:pad_w+W] = img
+        return out
+
+    def flip_kernel(kernel):
+        return np.flip(np.flip(kernel, axis=0), axis=1)
+                            </code></pre>
                             <h4>4-Loop Convolution Code:</h4>
                             <pre><code>
-    def convolve_4_loops(image, kernel):
-        # ... your 4-loop code snippet here ...
+    def conv2d_4loops(img, kernel):
+        assert img.ndim == 2 and kernel.ndim == 2
+        kH, kW = kernel.shape
+        k = flip_kernel(kernel)
+
+        pad_h = kH // 2
+        pad_w = kW // 2
+        img_p = pad_with_zeros(img, pad_h, pad_w)
+
+        H, W = img.shape
+        out = np.zeros((H, W), dtype=np.float64)
+
+        for i in range(H):
+            for j in range(W):
+                acc = 0.0
+                for m in range(kH):
+                    for n in range(kW):
+                        acc += img_p[i + m, j + n] * k[m, n]
+                out[i, j] = acc
+        return out
                             </code></pre>
                              <h4>2-Loop Convolution Code:</h4>
                             <pre><code>
-    def convolve_2_loops(image, kernel):
-        # ... your 2-loop code snippet here ...
+    def conv2d_2loops(img, kernel):
+        assert img.ndim == 2 and kernel.ndim == 2
+        kH, kW = kernel.shape
+        k = flip_kernel(kernel)
+
+        pad_h = kH // 2
+        pad_w = kW // 2
+        img_p = pad_with_zeros(img, pad_h, pad_w)
+
+        H, W = img.shape
+        out = np.zeros((H, W), dtype=np.float64)
+
+        for i in range(H):
+            for j in range(W):
+                window = img_p[i:i+kH, j:j+kW]
+                out[i, j] = np.sum(window * k)
+        return out
                             </code></pre>
                             <div class="image-grid image-grid-3x3">
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>4-loop: Box</figcaption></figure>
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>4-loop: Dx</figcaption></figure>
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>4-loop: Dy</figcaption></figure>
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>2-loop: Box</figcaption></figure>
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>2-loop: Dx</figcaption></figure>
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>2-loop: Dy</figcaption></figure>
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Scipy: Box</figcaption></figure>
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Scipy: Dx</figcaption></figure>
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Scipy: Dy</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/self_box_4.png" alt="4-loop: Box"></div><figcaption>4-loop: Box</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/self_dx_4.png" alt="4-loop: Dx"></div><figcaption>4-loop: Dx</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/self_dy_4.png" alt="4-loop: Dy"></div><figcaption>4-loop: Dy</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/self_box_2.png" alt="2-loop: Box"></div><figcaption>2-loop: Box</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/self_dx_2.png" alt="2-loop: Dx"></div><figcaption>2-loop: Dx</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/self_dy_2.png" alt="2-loop: Dy"></div><figcaption>2-loop: Dy</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/self_box_scipy.png" alt="Scipy: Box"></div><figcaption>Scipy: Box</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/self_dx_scipy.png" alt="Scipy: Dx"></div><figcaption>Scipy: Dx</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/self_dy_scipy.png" alt="Scipy: Dy"></div><figcaption>Scipy: Dy</figcaption></figure>
                             </div>
                         </section>
                         
