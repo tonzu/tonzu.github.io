@@ -26,17 +26,70 @@
             border-left: 1px solid #e5e7eb;
             padding-left: 1.5rem;
         }
-        .toc h3 {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: #111827;
-        }
+
+        /* TOC list reset + spacing */
         .toc ul {
             list-style: none;
             padding: 0;
             margin: 0;
-            space-y: 0.5rem;
+        }
+        .toc li + li { margin-top: 0.5rem; }
+        .toc .sub-list li + li { margin-top: 0.25rem; }
+
+        /*
+         * Make images scale to the page/container instead of forcing the
+         * page to expand. This keeps images visually balanced with text.
+         */
+        .content-card img,
+        .content-column img,
+        main.container img,
+        .image-grid img,
+        figure > img,
+        .freq-analysis-grid img,
+        .freq-hybrid-center img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+
+        /* Cap very tall images for readability (can be overridden by adding class .no-cap) */
+        .content-card img:not(.no-cap),
+        main.container img:not(.no-cap) {
+            max-height: clamp(220px, 60vh, 720px);
+        }
+
+        /* Consistent figure/caption styling */
+        figure { margin: 0; }
+        figure img { border-radius: 8px; }
+        figure figcaption {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: #6b7280;
+            text-align: center;
+        }
+
+        /* Generic image grid helpers to match other pages */
+        .image-grid { display: grid; gap: 1rem; }
+        .image-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+        .image-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+        .image-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+    .image-grid.cols-5 { grid-template-columns: repeat(5, 1fr); }
+        .image-grid-3x3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+
+        /* Frequency analysis sections */
+        .freq-analysis-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+        .freq-hybrid-center { grid-column: 1 / -1; display: flex; justify-content: center; }
+
+        /* Responsive adjustments */
+        @media (max-width: 900px) {
+            .image-grid.cols-4 { grid-template-columns: repeat(2, 1fr); }
+            .image-grid.cols-3 { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 600px) {
+            .image-grid.cols-4,
+            .image-grid.cols-3,
+            .image-grid.cols-2 { grid-template-columns: 1fr; }
         }
         .toc li a {
             color: #6b7280;
@@ -84,21 +137,7 @@
         code {
             font-family: 'Courier New', monospace;
         }
-        .image-grid-3x3 {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-        }
-        .freq-analysis-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-        .freq-hybrid-center {
-            grid-column: 1 / -1;
-            display: flex;
-            justify-content: center;
-        }
+        /* (Removed duplicate grid rules at end of style block) */
     </style>
 </head>
 <body>
@@ -228,11 +267,11 @@
                             <h3>1.2: Finite Difference Operator</h3>
                             <p>Partial derivatives were computed using finite difference operators Dx and Dy, followed by the gradient magnitude and binarized edge image.</p>
                             <div class="image-grid cols-3">
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Original</figcaption></figure>
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Derivative (Dx)</figcaption></figure>
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Derivative (Dy)</figcaption></figure>
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Gradient Magnitude</figcaption></figure>
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Binarized Edges</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/cameraman.png" alt="Original"></div><figcaption>Original</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/cameraman_dx.png" alt="Derivative (Dx)"></div><figcaption>Derivative (Dx)</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/cameraman_dy.png" alt="Derivative (Dy)"></div><figcaption>Derivative (Dy)</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/cameraman_gradient.png" alt="Gradient Magnitude"></div><figcaption>Gradient Magnitude</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/cameraman_edges.png" alt="Binarized Edges"></div><figcaption>Binarized Edges</figcaption></figure>
                             </div>
                         </section>
 
@@ -241,23 +280,23 @@
                             <p>To reduce noise, a Gaussian filter was applied before differentiation. This was compared with a direct Derivative of Gaussian (DoG) filter.</p>
                             <h4>DoG Filters</h4>
                             <div class="image-grid cols-3">
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Gaussian Kernel</figcaption></figure>
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>DoG (Dx)</figcaption></figure>
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>DoG (Dy)</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/gaussian.png"></div><figcaption>Gaussian Kernel</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/dog_dx.png"></div><figcaption>DoG (Dx)</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/dog_dy.png"></div><figcaption>DoG (Dy)</figcaption></figure>
                             </div>
                             <h4>Method 1: Blur then Differentiate</h4>
                             <div class="image-grid cols-4">
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Dx of Blurred</figcaption></figure>
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Dy of Blurred</figcaption></figure>
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Gradient Magnitude</figcaption></figure>
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Edges</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/lx_blur_then_dx.png"></div><figcaption>Dx of Blurred</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/lx_blur_then_dy.png"></div><figcaption>Dy of Blurred</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/blur_then_diff_gradmag.png"></div><figcaption>Gradient Magnitude</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/blur_then_diff_edges.png"></div><figcaption>Edges</figcaption></figure>
                             </div>
                              <h4>Method 2: Direct DoG Convolution</h4>
                             <div class="image-grid cols-4">
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>DoG Dx Result</figcaption></figure>
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>DoG Dy Result</figcaption></figure>
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Gradient Magnitude</figcaption></figure>
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Edges</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/lx_dog_once.png"></div><figcaption>DoG Dx Result</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/ly_dog_once.png"></div><figcaption>DoG Dy Result</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/dog_gradmag.png"></div><figcaption>Gradient Magnitude</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/dog_edges.png"></div><figcaption>Edges</figcaption></figure>
                             </div>
                         </section>
                     </section>
@@ -273,28 +312,28 @@
                             <p>The unsharp masking technique was used to sharpen images by amplifying high frequencies.</p>
                             <h4>Taj Mahal Sharpening Process</h4>
                             <div class="image-grid cols-4">
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Original</figcaption></figure>
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Blurred (Low Pass)</figcaption></figure>
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>High Frequencies</figcaption></figure>
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Sharpened</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/taj_original_color.png"></div><figcaption>Original</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/taj_blurred_color.png"></div><figcaption>Blurred (Low Pass)</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/taj_high_freq.png"></div><figcaption>High Frequencies</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/taj_original_sharp.png"></div><figcaption>Sharpened</figcaption></figure>
                             </div>
                             <h4>Varying Sharpness Levels</h4>
                             <div class="image-grid cols-4">
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Level 1</figcaption></figure>
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Level 2</figcaption></figure>
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Level 3</figcaption></figure>
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Level 4</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/taj_sharpened_alpha_0.5_color.png"></div><figcaption>Level 1</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/taj_sharpened_alpha_1.0_color.png"></div><figcaption>Level 2</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/taj_sharpened_alpha_5_color.png"></div><figcaption>Level 3</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/taj_sharpened_alpha_10_color.png"></div><figcaption>Level 4</figcaption></figure>
                             </div>
                             <h4>Blurring and Re-sharpening</h4>
                             <div class="image-grid cols-3">
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Sharpened</figcaption></figure>
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Then Blurred</figcaption></figure>
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Then Sharpened Again</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/taj_original_sharp.png"></div><figcaption>Sharpened</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/taj_artificially_blurred.png"></div><figcaption>Then Blurred</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/taj_sharpened_from_blur.png"></div><figcaption>Then Sharpened Again</figcaption></figure>
                             </div>
                             <h4>Additional Example</h4>
                             <div class="image-grid cols-2">
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Original Image</figcaption></figure>
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Sharpened Result</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/self_original_color.png"></div><figcaption>Original Image</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/self_sharpened_alpha_5_color.png"><figcaption>Sharpened Result</figcaption></figure>
                             </div>
                         </section>
 
@@ -303,10 +342,10 @@
                             <p>Hybrid images were created by blending the high frequencies of one image with the low frequencies of another.</p>
                             <h4>Example 1: Main Result with Analysis</h4>
                             <div class="image-grid cols-4">
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Original 1</figcaption></figure>
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Original 2</figcaption></figure>
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Aligned</figcaption></figure>
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Hybrid Result</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/DerekPicture.jpg"></div><figcaption>Original 1</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/nutmeg.jpg"></div><figcaption>Original 2</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/nutmeg.jpg"></div><figcaption>Aligned</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/hybrid_derek_nutmeg_s1_25_s2_8.png"></div><figcaption>Hybrid Result</figcaption></figure>
                             </div>
                             <h4>Distance Simulation</h4>
                             <div class="image-grid cols-4">
@@ -317,25 +356,25 @@
                             </div>
                             <h4>Frequency Analysis</h4>
                             <div class="freq-analysis-grid">
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>FFT of Original 1</figcaption></figure>
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>FFT of Original 2</figcaption></figure>
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>FFT of Filtered 1</figcaption></figure>
-                                <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>FFT of Filtered 2</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/fft_derek.png"></div><figcaption>FFT of Original 1</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/fft_nutmeg.png"></div><figcaption>FFT of Original 2</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/fft_derek_filtered.png"><figcaption>FFT of Filtered 1</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/fft_nutmeg_filtered.png"><figcaption>FFT of Filtered 2</figcaption></figure>
                                 <div class="freq-hybrid-center">
-                                    <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>FFT of Hybrid Image</figcaption></figure>
+                                    <figure><div class="image-placeholder"><img src="proj2/fft_hybrid.png"></div><figcaption>FFT of Hybrid Image</figcaption></figure>
                                 </div>
                             </div>
                             <h4>Example 2</h4>
                             <div class="image-grid cols-3">
-                               <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Original 1</figcaption></figure>
-                               <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Original 2</figcaption></figure>
-                               <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Hybrid Result</figcaption></figure>
+                               <figure><div class="image-placeholder"><img src="proj2/bike.jpg"></div><figcaption>Original 1</figcaption></figure>
+                               <figure><div class="image-placeholder"><img src="proj2/ninja.jpeg"></div><figcaption>Original 2</figcaption></figure>
+                               <figure><div class="image-placeholder"><img src="proj2/hybrid_ninja_bike.png"></div><figcaption>Hybrid Result</figcaption></figure>
                             </div>
                             <h4>Example 3</h4>
                              <div class="image-grid cols-3">
-                               <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Original 1</figcaption></figure>
-                               <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Original 2</figcaption></figure>
-                               <figure><div class="image-placeholder"><i class="fas fa-camera"></i></div><figcaption>Hybrid Result</figcaption></figure>
+                               <figure><div class="image-placeholder"><img src="proj2/fish.bmp"></div><figcaption>Original 1</figcaption></figure>
+                               <figure><div class="image-placeholder"><img src="proj2/submarine.bmp"></div><figcaption>Original 2</figcaption></figure>
+                               <figure><div class="image-placeholder"><img src="proj2/fish_submarine.png"></div><figcaption>Hybrid Result</figcaption></figure>
                             </div>
                         </section>
 
