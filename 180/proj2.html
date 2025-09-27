@@ -69,7 +69,8 @@
             text-align: center;
         }
 
-        /* Uniform image sizing: scale smaller images up to a consistent box */
+        /* Uniform image sizing: use a consistent box and scale up small images */
+        .image-placeholder { aspect-ratio: 4 / 3; }
         .image-placeholder img {
             width: 100%;
             height: 100%;
@@ -86,8 +87,10 @@
         .image-grid-3x3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
 
         /* Frequency analysis sections */
-        .freq-analysis-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
-        .freq-hybrid-center { grid-column: 1 / -1; display: flex; justify-content: center; }
+    .freq-analysis-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+    .freq-hybrid-center { grid-column: 1 / -1; display: flex; justify-content: center; }
+    /* Keep the hybrid FFT image same size as a grid cell (avoid full width) */
+    .freq-hybrid-center .image-placeholder { width: min(100%, 460px); }
 
         /* Responsive adjustments */
         @media (max-width: 900px) {
@@ -258,6 +261,16 @@
                 out[i, j] = np.sum(window * k)
         return out
                             </code></pre>
+                            <!-- Original image before the 3x3 grid, same visual size as tiles -->
+                            <div class="image-grid cols-3" style="margin-bottom: 1rem;">
+                                <figure>
+                                    <div class="image-placeholder">
+                                        <img src="proj2/self_gray.png" alt="Original (Grayscale)">
+                                    </div>
+                                    <figcaption>Original (Grayscale)</figcaption>
+                                </figure>
+                            </div>
+
                             <div class="image-grid image-grid-3x3">
                                 <figure><div class="image-placeholder"><img src="proj2/self_box_4.png" alt="4-loop: Box"></div><figcaption>4-loop: Box</figcaption></figure>
                                 <figure><div class="image-placeholder"><img src="proj2/self_dx_4.png" alt="4-loop: Dx"></div><figcaption>4-loop: Dx</figcaption></figure>
@@ -327,10 +340,10 @@
                             </div>
                             <h4>Varying Sharpness Levels</h4>
                             <div class="image-grid cols-4">
-                                <figure><div class="image-placeholder"><img src="proj2/taj_sharpened_alpha_0.5_color.png"></div><figcaption>Level 1</figcaption></figure>
-                                <figure><div class="image-placeholder"><img src="proj2/taj_sharpened_alpha_1.0_color.png"></div><figcaption>Level 2</figcaption></figure>
-                                <figure><div class="image-placeholder"><img src="proj2/taj_sharpened_alpha_5_color.png"></div><figcaption>Level 3</figcaption></figure>
-                                <figure><div class="image-placeholder"><img src="proj2/taj_sharpened_alpha_10_color.png"></div><figcaption>Level 4</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/taj_sharpened_alpha_0.5_color.png"></div><figcaption>alpha = 0.5</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/taj_sharpened_alpha_1.0_color.png"></div><figcaption>alpha = 1.0</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/taj_sharpened_alpha_5_color.png"></div><figcaption>alpha = 5.0</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/taj_sharpened_alpha_10_color.png"></div><figcaption>alpha = 10.0</figcaption></figure>
                             </div>
                             <h4>Blurring and Re-sharpening</h4>
                             <div class="image-grid cols-3">
@@ -364,10 +377,10 @@
                             </div>
                             <h4>Frequency Analysis</h4>
                             <div class="freq-analysis-grid">
-                                <figure><div class="image-placeholder"><img src="proj2/fft_derek.png"></div><figcaption>FFT of Original 1</figcaption></figure>
-                                <figure><div class="image-placeholder"><img src="proj2/fft_nutmeg.png"></div><figcaption>FFT of Original 2</figcaption></figure>
-                                <figure><div class="image-placeholder"><img src="proj2/fft_derek_filtered.png" /></div><figcaption>FFT of Filtered 1</figcaption></figure>
-                                <figure><div class="image-placeholder"><img src="proj2/fft_nutmeg_filtered.png" /></div><figcaption>FFT of Filtered 2</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/fft_derek.png"></div><figcaption>FFT of Nutmeg</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/fft_nutmeg.png"></div><figcaption>FFT of Derek</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/fft_nutmeg_filtered.png" /></div><figcaption>FFT of Nutmeg High Pass Filtered</figcaption></figure>
+                                <figure><div class="image-placeholder"><img src="proj2/fft_derek_filtered.png" /></div><figcaption>FFT of Derek Low Pass Filtered</figcaption></figure>
                                 <div class="freq-hybrid-center">
                                     <figure><div class="image-placeholder"><img src="proj2/fft_hybrid.png"></div><figcaption>FFT of Hybrid Image</figcaption></figure>
                                 </div>
@@ -436,10 +449,10 @@
                                  <!-- Row 5 -->
                                  <figure><div class="image-placeholder"><img src="proj2/burt_apple_level_4.png"></div><figcaption>Apple L5</figcaption></figure>
                                  <figure><div class="image-placeholder"><img src="proj2/burt_orange_level_4.png"></div><figcaption>Orange L5</figcaption></figure>
-                                 <figure><div class="image-placeholder"><img src="proj2/burt_blend_level_4.png"></div><figcaption>Combined Result</figcaption></figure>
+                                 <figure><div class="image-placeholder"><img src="proj2/burt_blend_level_4.png"></div><figcaption>Combined L5</figcaption></figure>
                                  <!-- Row 6 -->
-                                 <figure><div class="image-placeholder"><img src="proj2/burt_apple_level_5.png"></div><figcaption>Apple L5</figcaption></figure>
-                                 <figure><div class="image-placeholder"><img src="proj2/burt_orange_level_5.png"></div><figcaption>Orange L5</figcaption></figure>
+                                 <figure><div class="image-placeholder"><img src="proj2/burt_apple_level_5.png"></div><figcaption>Apple Result</figcaption></figure>
+                                 <figure><div class="image-placeholder"><img src="proj2/burt_orange_level_5.png"></div><figcaption>Orange Result</figcaption></figure>
                                  <figure><div class="image-placeholder"><img src="proj2/burt_blend_level_5.png"></div><figcaption>Combined Result</figcaption></figure>
                              </div>
                         </section>
