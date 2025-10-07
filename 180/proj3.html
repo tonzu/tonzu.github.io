@@ -5,6 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>Project 3: Panoramas and Homographies | CS180</title>
 	<link rel="stylesheet" href="styles.css" />
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 	<!-- KaTeX for math rendering in A.2 -->
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
 	<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
@@ -12,7 +13,7 @@
 	<style>
 		/* Lightweight additions to complement styles.css */
 		* { box-sizing: border-box; }
-		html, body { max-width: 100%; overflow-x: hidden; }
+		/* Let content size naturally; don't hide horizontal overflow globally (prevents grids being cut off) */
 		body { max-width: 1200px; margin: 0 auto; }
 		header.page-header { padding: 1.25rem 0; border-bottom: 1px solid #e5e7eb; }
 		.nav-bar { display:flex; gap:.5rem; align-items:center; margin:.5rem 0 1rem; }
@@ -29,8 +30,18 @@
 		.grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
 		.grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
 		.grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+		/* Responsive breakpoints so grids resize instead of overflowing */
+		@media (max-width: 900px) {
+			.grid.cols-4 { grid-template-columns: repeat(2, 1fr); }
+			.grid.cols-3 { grid-template-columns: repeat(2, 1fr); }
+		}
+		@media (max-width: 600px) {
+			.grid.cols-4,
+			.grid.cols-3,
+			.grid.cols-2 { grid-template-columns: 1fr; }
+		}
 		figure { margin:0; }
-		figure img { width: 100%; height: auto; border-radius: 8px; cursor: zoom-in; box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+		figure img { width: 100%; height: auto; border-radius: 8px; cursor: zoom-in; box-shadow: 0 1px 3px rgba(0,0,0,.12); display:block; object-fit: contain; }
 		figure figcaption { font-size: .9rem; color: #555; margin-top: .35rem; }
 		/* Lightbox / modal */
 		.lightbox-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.8); display:none; align-items:center; justify-content:center; z-index: 1000; padding: 2vh 2vw; overflow:auto; }
@@ -59,14 +70,21 @@
 	</style>
 </head>
 <body>
-	<header class="page-header">
-		<h1>Project 3: Panoramas and Homographies</h1>
-		<div class="nav-bar">
-			<a href="index.html">Home</a>
-			<a href="proj2.html">&#8592; Prev (Project 2)</a>
-			<span class="badge" title="Part B coming soon">Next: Part B (coming soon)</span>
+	<header>
+		<div class="container">
+			<div class="header-content">
+				<a href="index.html" class="back-button" aria-label="Back to portfolio">
+					<i class="fas fa-arrow-left"></i>
+				</a>
+				<div class="header-info">
+					<div class="project-icon"><i class="fas fa-wave-square"></i></div>
+					<div>
+						<h1 class="project-title">Project 3: Panoramas and Homographies</h1>
+						<p class="project-course">CS180 • Fall 2025</p>
+					</div>
+				</div>
+			</div>
 		</div>
-		<p class="subtitle">CS180 • Fall 2025</p>
 	</header>
 
 	<div class="layout">
