@@ -31,11 +31,11 @@
 		figure img { width: 100%; height: auto; border-radius: 8px; cursor: zoom-in; box-shadow: 0 1px 3px rgba(0,0,0,.12); }
 		figure figcaption { font-size: .9rem; color: #555; margin-top: .35rem; }
 		/* Lightbox / modal */
-		.lightbox-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.8); display:none; align-items:center; justify-content:center; z-index: 1000; }
+		.lightbox-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.8); display:none; align-items:center; justify-content:center; z-index: 1000; padding: 2vh 2vw; overflow:auto; }
 		.lightbox-overlay.open { display:flex; }
-		.lightbox-content { position:relative; max-width: min(92vw, 1400px); max-height: 92vh; }
-		.lightbox-content img { width:100%; height:auto; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,.35); cursor: zoom-out; }
-		.lightbox-close { position:absolute; top:.5rem; right:.5rem; background: rgba(255,255,255,.9); border:none; border-radius:999px; width:36px; height:36px; cursor:pointer; font-size:18px; }
+		.lightbox-content { position:relative; max-width: 100%; max-height: 100%; }
+		.lightbox-content img { display:block; max-width: min(96vw, 1400px); max-height: 96vh; width:auto; height:auto; object-fit: contain; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,.35); cursor: zoom-out; }
+		.lightbox-close { position:absolute; top:.75rem; right:.75rem; background: rgba(255,255,255,.95); border:none; border-radius:999px; width:36px; height:36px; cursor:pointer; font-size:18px; box-shadow: 0 2px 6px rgba(0,0,0,.25); }
 		.katex-block { margin: .75rem 0; }
 		.badge { display:inline-block; font-size:.8rem; padding:.15rem .4rem; border:1px solid #e5e7eb; border-radius:6px; background:#fafafa; }
         /* Styles for code blocks */
@@ -61,7 +61,7 @@
 			<a href="proj2.html">&#8592; Prev (Project 2)</a>
 			<span class="badge" title="Part B coming soon">Next: Part B (coming soon)</span>
 		</div>
-		<p class="subtitle">CS180/CS280 — A: Homographies, Warping, and Mosaics</p>
+		<p class="subtitle">CS180 • Fall 2025</p>
 	</header>
 
 	<div class="layout">
@@ -79,7 +79,6 @@
 		<main>
 			<section id="a1">
 				<h2>A.1 Two pairs of images with a camera rotation</h2>
-				<p>Two pairs captured from slightly different camera rotations. Click any image to view it larger.</p>
 				<div class="grid cols-2">
 					<figure>
 						<img class="lb" src="proj3/IMG_5597.jpg" alt="Room Facing Down" />
@@ -103,10 +102,19 @@
 			<section id="a2">
 				<h2>A.2 Matches, equations, and homography</h2>
 				<div class="grid cols-2">
-					<figure>
-						<img class="lb" src="proj3/room_matches.png" alt="Manual correspondences between the room image pair" />
-						<figcaption>Manual correspondences between the room image pair.</figcaption>
-					</figure>
+                    <div>   
+                        <figure>
+                            <img class="lb" src="proj3/room_matches.png" alt="Manual correspondences between the room image pair" />
+                            <figcaption>Manual correspondences between the room image pair.</figcaption>
+                        </figure>
+                        <div style="margin-top:1rem;">
+                            <h3>Recovered homography for the shown pair</h3>
+            
+                            <pre id="homography-matrix"><code> array([[ 7.13986118e-01, -5.96434567e-01,  2.81016189e+02],
+                                                                    [-3.25037133e-03,  9.14168978e-02,  7.61972838e+02],
+                                                                    [-5.20929674e-06, -5.91647402e-04,  1.00000000e+00]]) </code></pre>
+                        </div>
+                    </div>
 					<div>
 						<h3>Linear system for H</h3>
 						<p>Given correspondences $(x_i, y_i) \mapsto (x'_i, y'_i)$, we solve for $\mathbf{h}$ such that $\mathbf{A}\,\mathbf{h} = \mathbf{0}$ where each point contributes:</p>
@@ -123,18 +131,12 @@
 						<p>We recover $\mathbf{H}$ as the reshaped right singular vector of $\mathbf{A}$ with the smallest singular value (DLT). We also use Hartley normalization for stability.</p>
 					</div>
 				</div>
-				<div style="margin-top:1rem;">
-					<h3>Recovered homography for the shown pair</h3>
-					<p>Numeric $\mathbf{H}$ (formatted in the notebook) will be pasted here:</p>
-					<pre id="homography-matrix"><code> array([[ 7.13986118e-01, -5.96434567e-01,  2.81016189e+02],
-       [-3.25037133e-03,  9.14168978e-02,  7.61972838e+02],
-       [-5.20929674e-06, -5.91647402e-04,  1.00000000e+00]]) </code></pre>
-				</div>
+				
 			</section>
 
 			<section id="a3">
-				<h2>A.3 Rectification: Nearest vs Bilinear</h2>
-				<p>Each row: original image, rectified with nearest-neighbor interpolation, rectified with bilinear interpolation.</p>
+				<h2>A.3 Rectification: Nearest-Neighbors vs Bilinear</h2>
+				<p>We apply inverse homography to the original images to obtain rectified views. The NN interpolation tends to produce jagged artifacts, while bilinear interpolation results in smoother images, although it takes longer to compute.</p>
 				<div class="grid cols-3">
 					<figure>
 						<img class="lb" src="proj3/IMG_5605.jpg" alt="Laptop (Original)" />
@@ -166,7 +168,7 @@
 
 			<section id="a4">
 				<h2>A.4 Mosaics (weighted averaging)</h2>
-				<p>Each row: two images and their blended mosaic.</p>
+				<p>The procedure involves first aligning the images by manually selecting keypoints and computing the homographies. Then, we inverse warp one image into the coordinate space of the other and blend them by converting binary masks to soft masks through feathering.</p>
 				<div class="grid cols-3">
 					<figure>
 						<img class="lb" src="proj3/IMG_5597.jpg" alt="Room Facing Down" />
