@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Project 3: Panoramas and Homographies | CS180</title>
+	<link rel="stylesheet" href="styles.css" />
+	<!-- KaTeX for math rendering in A.2 -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaR5a9gQGQP0g5B1D4ZlSY1E1BPZ+I2t6VQEz28UBfG5" crossorigin="anonymous">
+	<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0HlNYNn9GIk5fZpA0nq8NwEV0pRFbY7q44I/g0VJG" crossorigin="anonymous"></script>
+	<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" integrity="sha384-mll67QQFJfxn9QNgp4spT6g8lEutEup5Q4W2PgbE+FQNYpQzq5Q0X5KW3QxZ0ZC2" crossorigin="anonymous"
+		onload="renderMathInElement(document.body, {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+	<style>
+		/* Lightweight additions to complement styles.css */
+		body { max-width: 1200px; margin: 0 auto; }
+		header.page-header { padding: 1.25rem 0; border-bottom: 1px solid #e5e7eb; }
+		.nav-bar { display:flex; gap:.5rem; align-items:center; margin:.5rem 0 1rem; }
+		.nav-bar a { padding:.35rem .6rem; border:1px solid #e5e7eb; border-radius:6px; text-decoration:none; color:#111; background:#fafafa; }
+		.layout { display:grid; grid-template-columns: 240px 1fr; gap: 1.25rem; }
+		@media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
+		aside.toc { position: sticky; top: 0.75rem; align-self: start; border:1px solid #e5e7eb; border-radius:10px; padding:0.75rem; background:#fff; }
+		aside.toc h3 { margin-top:0; font-size:1rem; }
+		aside.toc ul { list-style:none; padding-left:0; margin:0; }
+		aside.toc li { margin:.35rem 0; }
+		main section { margin-bottom: 2.25rem; }
+		h2 { border-bottom: 1px solid #e5e7eb; padding-bottom:.25rem; }
+		.grid { display:grid; gap: .75rem; }
+		.grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+		.grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+		.grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+		figure { margin:0; }
+		figure img { width: 100%; height: auto; border-radius: 8px; cursor: zoom-in; box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+		figure figcaption { font-size: .9rem; color: #555; margin-top: .35rem; }
+		/* Lightbox / modal */
+		.lightbox-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.8); display:none; align-items:center; justify-content:center; z-index: 1000; }
+		.lightbox-overlay.open { display:flex; }
+		.lightbox-content { position:relative; max-width: min(92vw, 1400px); max-height: 92vh; }
+		.lightbox-content img { width:100%; height:auto; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,.35); cursor: zoom-out; }
+		.lightbox-close { position:absolute; top:.5rem; right:.5rem; background: rgba(255,255,255,.9); border:none; border-radius:999px; width:36px; height:36px; cursor:pointer; font-size:18px; }
+		.katex-block { margin: .75rem 0; }
+		.badge { display:inline-block; font-size:.8rem; padding:.15rem .4rem; border:1px solid #e5e7eb; border-radius:6px; background:#fafafa; }
+	</style>
+</head>
+<body>
+	<header class="page-header">
+		<h1>Project 3: Panoramas and Homographies</h1>
+		<div class="nav-bar">
+			<a href="index.html">Home</a>
+			<a href="proj2.html">&#8592; Prev (Project 2)</a>
+			<span class="badge" title="Part B coming soon">Next: Part B (coming soon)</span>
+		</div>
+		<p class="subtitle">CS180/CS280 — A: Homographies, Warping, and Mosaics</p>
+	</header>
+
+	<div class="layout">
+		<aside class="toc">
+			<h3>Contents</h3>
+			<ul>
+				<li><a href="#a1">A.1 Pictures</a></li>
+				<li><a href="#a2">A.2 Recover Homographies</a></li>
+				<li><a href="#a3">A.3 Rectification (NN vs Bilinear)</a></li>
+				<li><a href="#a4">A.4 Mosaics (weighted blending)</a></li>
+				<li><span class="badge">Part B (later)</span></li>
+			</ul>
+		</aside>
+
+		<main>
+			<section id="a1">
+				<h2>A.1 Two pairs of images with a camera rotation</h2>
+				<p>Two pairs captured from slightly different camera rotations. Click any image to view it larger.</p>
+				<div class="grid cols-2">
+					<figure>
+						<img class="lb" src="proj3/IMG_5597.jpg" alt="Pair 1 — image A" />
+						<figcaption>Pair 1 — image A</figcaption>
+					</figure>
+					<figure>
+						<img class="lb" src="proj3/IMG_5598.jpg" alt="Pair 1 — image B" />
+						<figcaption>Pair 1 — image B</figcaption>
+					</figure>
+					<figure>
+						<img class="lb" src="proj3/IMG_5599.jpg" alt="Pair 2 — image A" />
+						<figcaption>Pair 2 — image A</figcaption>
+					</figure>
+					<figure>
+						<img class="lb" src="proj3/IMG_5600.jpg" alt="Pair 2 — image B" />
+						<figcaption>Pair 2 — image B</figcaption>
+					</figure>
+				</div>
+			</section>
+
+			<section id="a2">
+				<h2>A.2 Matches, equations, and homography</h2>
+				<div class="grid cols-2">
+					<figure>
+						<img class="lb" src="proj3/matches_pair1.png" alt="Keypoint matches between the pair" />
+						<figcaption>Matches between one pair (manual correspondences).</figcaption>
+					</figure>
+					<div>
+						<h3>Linear system for H</h3>
+						<p>Given correspondences $(x_i, y_i) \mapsto (x'_i, y'_i)$, we solve for $\mathbf{h}$ such that $\mathbf{A}\,\mathbf{h} = \mathbf{0}$ where each point contributes:</p>
+						<div class="katex-block">$$
+						\begin{bmatrix}
+							-x_i & -y_i & -1 & 0 & 0 & 0 & x_i x'_i & y_i x'_i & x'_i \\
+							0 & 0 & 0 & -x_i & -y_i & -1 & x_i y'_i & y_i y'_i & y'_i
+						\end{bmatrix}
+						\begin{bmatrix}
+							h_{11}\\ h_{12}\\ h_{13}\\ h_{21}\\ h_{22}\\ h_{23}\\ h_{31}\\ h_{32}\\ h_{33}
+						\end{bmatrix}
+						= \mathbf{0}
+						$$</div>
+						<p>We recover $\mathbf{H}$ as the reshaped right singular vector of $\mathbf{A}$ with the smallest singular value (DLT). We also use Hartley normalization for stability.</p>
+					</div>
+				</div>
+				<div style="margin-top:1rem;">
+					<h3>Recovered homography for the shown pair</h3>
+					<p>Numeric $\mathbf{H}$ (formatted in the notebook) will be pasted here:</p>
+					<pre id="homography-matrix">[Paste 3x3 H here]</pre>
+				</div>
+			</section>
+
+			<section id="a3">
+				<h2>A.3 Rectification: Nearest vs Bilinear</h2>
+				<p>Each row: original image, rectified with nearest-neighbor interpolation, rectified with bilinear interpolation.</p>
+				<div class="grid cols-3">
+					<figure>
+						<img class="lb" src="proj3/laptop_original.jpg" alt="Original 1" />
+						<figcaption>Original 1</figcaption>
+					</figure>
+					<figure>
+						<img class="lb" src="proj3/laptop_rect_nn.jpg" alt="Rectified (Nearest) 1" />
+						<figcaption>Rectified (Nearest)</figcaption>
+					</figure>
+					<figure>
+						<img class="lb" src="proj3/laptop_rect_bilinear.jpg" alt="Rectified (Bilinear) 1" />
+						<figcaption>Rectified (Bilinear)</figcaption>
+					</figure>
+
+					<figure>
+						<img class="lb" src="proj3/poster_original.jpg" alt="Original 2" />
+						<figcaption>Original 2</figcaption>
+					</figure>
+					<figure>
+						<img class="lb" src="proj3/poster_rect_nn.jpg" alt="Rectified (Nearest) 2" />
+						<figcaption>Rectified (Nearest)</figcaption>
+					</figure>
+					<figure>
+						<img class="lb" src="proj3/poster_rect_bilinear.jpg" alt="Rectified (Bilinear) 2" />
+						<figcaption>Rectified (Bilinear)</figcaption>
+					</figure>
+				</div>
+			</section>
+
+			<section id="a4">
+				<h2>A.4 Mosaics (weighted averaging)</h2>
+				<p>Each row: left image, right image, and their blended mosaic.</p>
+				<div class="grid cols-3">
+					<figure>
+						<img class="lb" src="proj3/room_left.jpg" alt="Room left" />
+						<figcaption>Left</figcaption>
+					</figure>
+					<figure>
+						<img class="lb" src="proj3/room_right.jpg" alt="Room right" />
+						<figcaption>Right</figcaption>
+					</figure>
+					<figure>
+						<img class="lb" src="proj3/room_mosaic.jpg" alt="Room mosaic" />
+						<figcaption>Mosaic (feathered blend)</figcaption>
+					</figure>
+
+					<figure>
+						<img class="lb" src="proj3/roof_left.jpg" alt="Roof left" />
+						<figcaption>Left</figcaption>
+					</figure>
+					<figure>
+						<img class="lb" src="proj3/roof_right.jpg" alt="Roof right" />
+						<figcaption>Right</figcaption>
+					</figure>
+					<figure>
+						<img class="lb" src="proj3/roof_mosaic.jpg" alt="Roof mosaic" />
+						<figcaption>Mosaic (feathered blend)</figcaption>
+					</figure>
+
+					<figure>
+						<img class="lb" src="proj3/bonus_left.jpg" alt="Third pair left (placeholder)" />
+						<figcaption>Left (placeholder)</figcaption>
+					</figure>
+					<figure>
+						<img class="lb" src="proj3/bonus_right.jpg" alt="Third pair right (placeholder)" />
+						<figcaption>Right (placeholder)</figcaption>
+					</figure>
+					<figure>
+						<img class="lb" src="proj3/bonus_mosaic.jpg" alt="Third mosaic (placeholder)" />
+						<figcaption>Mosaic (placeholder)</figcaption>
+					</figure>
+				</div>
+			</section>
+		</main>
+	</div>
+
+	<!-- Lightbox modal root -->
+	<div id="lightbox" class="lightbox-overlay" aria-hidden="true">
+		<div class="lightbox-content" role="dialog" aria-modal="true" aria-label="Image preview">
+			<button class="lightbox-close" aria-label="Close">&times;</button>
+			<img id="lightbox-img" src="" alt="Expanded image" />
+		</div>
+	</div>
+
+	<script>
+		// Simple lightbox: click .lb images to open; click outside, close button, or ESC to dismiss
+		(function(){
+			const overlay = document.getElementById('lightbox');
+			const imgEl = document.getElementById('lightbox-img');
+			const closeBtn = overlay.querySelector('.lightbox-close');
+
+			function openLightbox(src) {
+				imgEl.src = src;
+				overlay.classList.add('open');
+				overlay.setAttribute('aria-hidden', 'false');
+			}
+			function closeLightbox(){
+				overlay.classList.remove('open');
+				overlay.setAttribute('aria-hidden', 'true');
+				imgEl.src = '';
+			}
+
+			document.addEventListener('click', (e) => {
+				const t = e.target;
+				if (t && t.matches('img.lb')) {
+					const full = t.getAttribute('data-full') || t.getAttribute('src');
+					e.preventDefault();
+					openLightbox(full);
+				}
+			});
+			overlay.addEventListener('click', (e) => {
+				// Close if clicked outside the image or on the close button
+				if (e.target === overlay || e.target === closeBtn) closeLightbox();
+			});
+			document.addEventListener('keydown', (e) => {
+				if (e.key === 'Escape') closeLightbox();
+			});
+		})();
+	</script>
+</body>
+</html>
+
