@@ -11,6 +11,8 @@
 	<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 	<style>
 		/* Lightweight additions to complement styles.css */
+		* { box-sizing: border-box; }
+		html, body { max-width: 100%; overflow-x: hidden; }
 		body { max-width: 1200px; margin: 0 auto; }
 		header.page-header { padding: 1.25rem 0; border-bottom: 1px solid #e5e7eb; }
 		.nav-bar { display:flex; gap:.5rem; align-items:center; margin:.5rem 0 1rem; }
@@ -37,6 +39,9 @@
 		.lightbox-content img { display:block; max-width: min(96vw, 1400px); max-height: 96vh; width:auto; height:auto; object-fit: contain; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,.35); cursor: zoom-out; }
 		.lightbox-close { position:absolute; top:.75rem; right:.75rem; background: rgba(255,255,255,.95); border:none; border-radius:999px; width:36px; height:36px; cursor:pointer; font-size:18px; box-shadow: 0 2px 6px rgba(0,0,0,.25); }
 		.katex-block { margin: .75rem 0; }
+		/* Ensure wide equations don't force page-wide overflow */
+		.katex-display { max-width: 100%; overflow-x: auto; overflow-y: hidden; }
+		.katex-display > .katex { white-space: nowrap; }
 		.badge { display:inline-block; font-size:.8rem; padding:.15rem .4rem; border:1px solid #e5e7eb; border-radius:6px; background:#fafafa; }
         /* Styles for code blocks */
         pre {
