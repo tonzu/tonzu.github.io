@@ -4,6 +4,20 @@
     box-sizing: border-box;
 }
 
+/* Make media responsive by default */
+img, video, canvas, svg {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Allow grid/flex children to shrink so content doesn't force horizontal overflow */
+.image-grid > *,
+.grid > *,
+.layout > * {
+    min-width: 0;
+}
+
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     line-height: 1.6;
