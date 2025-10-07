@@ -6,10 +6,9 @@
 	<title>Project 3: Panoramas and Homographies | CS180</title>
 	<link rel="stylesheet" href="styles.css" />
 	<!-- KaTeX for math rendering in A.2 -->
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaR5a9gQGQP0g5B1D4ZlSY1E1BPZ+I2t6VQEz28UBfG5" crossorigin="anonymous">
-	<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0HlNYNn9GIk5fZpA0nq8NwEV0pRFbY7q44I/g0VJG" crossorigin="anonymous"></script>
-	<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" integrity="sha384-mll67QQFJfxn9QNgp4spT6g8lEutEup5Q4W2PgbE+FQNYpQzq5Q0X5KW3QxZ0ZC2" crossorigin="anonymous"
-		onload="renderMathInElement(document.body, {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+	<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+	<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 	<style>
 		/* Lightweight additions to complement styles.css */
 		body { max-width: 1200px; margin: 0 auto; }
@@ -39,6 +38,19 @@
 		.lightbox-close { position:absolute; top:.5rem; right:.5rem; background: rgba(255,255,255,.9); border:none; border-radius:999px; width:36px; height:36px; cursor:pointer; font-size:18px; }
 		.katex-block { margin: .75rem 0; }
 		.badge { display:inline-block; font-size:.8rem; padding:.15rem .4rem; border:1px solid #e5e7eb; border-radius:6px; background:#fafafa; }
+        /* Styles for code blocks */
+        pre {
+            background: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            overflow-x: auto;
+            font-size: 0.875rem;
+            margin-bottom: 1.5rem;
+        }
+        code {
+            font-family: 'Courier New', monospace;
+        }
 	</style>
 </head>
 <body>
@@ -70,20 +82,20 @@
 				<p>Two pairs captured from slightly different camera rotations. Click any image to view it larger.</p>
 				<div class="grid cols-2">
 					<figure>
-						<img class="lb" src="proj3/IMG_5597.jpg" alt="Pair 1 — image A" />
-						<figcaption>Pair 1 — image A</figcaption>
+						<img class="lb" src="proj3/IMG_5597.jpg" alt="Room Facing Down" />
+						<figcaption>Room Facing Down</figcaption>
 					</figure>
 					<figure>
-						<img class="lb" src="proj3/IMG_5598.jpg" alt="Pair 1 — image B" />
-						<figcaption>Pair 1 — image B</figcaption>
+						<img class="lb" src="proj3/IMG_5598.jpg" alt="Room Facing Up" />
+						<figcaption>Room Facing Up</figcaption>
 					</figure>
 					<figure>
-						<img class="lb" src="proj3/IMG_5599.jpg" alt="Pair 2 — image A" />
-						<figcaption>Pair 2 — image A</figcaption>
+						<img class="lb" src="proj3/IMG_5599.jpg" alt="Roof Left" />
+						<figcaption>Roof Left</figcaption>
 					</figure>
 					<figure>
-						<img class="lb" src="proj3/IMG_5600.jpg" alt="Pair 2 — image B" />
-						<figcaption>Pair 2 — image B</figcaption>
+						<img class="lb" src="proj3/IMG_5600.jpg" alt="Roof Right" />
+						<figcaption>Roof Right</figcaption>
 					</figure>
 				</div>
 			</section>
@@ -92,8 +104,8 @@
 				<h2>A.2 Matches, equations, and homography</h2>
 				<div class="grid cols-2">
 					<figure>
-						<img class="lb" src="proj3/matches_pair1.png" alt="Keypoint matches between the pair" />
-						<figcaption>Matches between one pair (manual correspondences).</figcaption>
+						<img class="lb" src="proj3/room_matches.png" alt="Manual correspondences between the room image pair" />
+						<figcaption>Manual correspondences between the room image pair.</figcaption>
 					</figure>
 					<div>
 						<h3>Linear system for H</h3>
@@ -114,7 +126,9 @@
 				<div style="margin-top:1rem;">
 					<h3>Recovered homography for the shown pair</h3>
 					<p>Numeric $\mathbf{H}$ (formatted in the notebook) will be pasted here:</p>
-					<pre id="homography-matrix">[Paste 3x3 H here]</pre>
+					<pre id="homography-matrix"><code> array([[ 7.13986118e-01, -5.96434567e-01,  2.81016189e+02],
+       [-3.25037133e-03,  9.14168978e-02,  7.61972838e+02],
+       [-5.20929674e-06, -5.91647402e-04,  1.00000000e+00]]) </code></pre>
 				</div>
 			</section>
 
@@ -123,74 +137,74 @@
 				<p>Each row: original image, rectified with nearest-neighbor interpolation, rectified with bilinear interpolation.</p>
 				<div class="grid cols-3">
 					<figure>
-						<img class="lb" src="proj3/laptop_original.jpg" alt="Original 1" />
-						<figcaption>Original 1</figcaption>
+						<img class="lb" src="proj3/IMG_5605.jpg" alt="Laptop (Original)" />
+						<figcaption>Laptop (Original)</figcaption>
 					</figure>
 					<figure>
-						<img class="lb" src="proj3/laptop_rect_nn.jpg" alt="Rectified (Nearest) 1" />
-						<figcaption>Rectified (Nearest)</figcaption>
+						<img class="lb" src="proj3/laptop_warped_nearest.png" alt="Laptop Rectified (Nearest)" />
+						<figcaption>Laptop Rectified (Nearest)</figcaption>
 					</figure>
 					<figure>
-						<img class="lb" src="proj3/laptop_rect_bilinear.jpg" alt="Rectified (Bilinear) 1" />
-						<figcaption>Rectified (Bilinear)</figcaption>
+						<img class="lb" src="proj3/laptop_warped_bilinear.png" alt="Laptop Rectified (Bilinear)" />
+						<figcaption>Laptop Rectified (Bilinear)</figcaption>
 					</figure>
 
 					<figure>
-						<img class="lb" src="proj3/poster_original.jpg" alt="Original 2" />
-						<figcaption>Original 2</figcaption>
+						<img class="lb" src="proj3/IMG_5606.jpg" alt="Poster (Original)" />
+						<figcaption>Poster (Original)</figcaption>
 					</figure>
 					<figure>
-						<img class="lb" src="proj3/poster_rect_nn.jpg" alt="Rectified (Nearest) 2" />
-						<figcaption>Rectified (Nearest)</figcaption>
+						<img class="lb" src="proj3/poster_warped_nearest.png" alt="Poster Rectified (Nearest)" />
+						<figcaption>Poster Rectified (Nearest)</figcaption>
 					</figure>
 					<figure>
-						<img class="lb" src="proj3/poster_rect_bilinear.jpg" alt="Rectified (Bilinear) 2" />
-						<figcaption>Rectified (Bilinear)</figcaption>
+						<img class="lb" src="proj3/poster_warped_bilinear.png" alt="Poster Rectified (Bilinear)" />
+						<figcaption>Poster Rectified (Bilinear)</figcaption>
 					</figure>
 				</div>
 			</section>
 
 			<section id="a4">
 				<h2>A.4 Mosaics (weighted averaging)</h2>
-				<p>Each row: left image, right image, and their blended mosaic.</p>
+				<p>Each row: two images and their blended mosaic.</p>
 				<div class="grid cols-3">
 					<figure>
-						<img class="lb" src="proj3/room_left.jpg" alt="Room left" />
-						<figcaption>Left</figcaption>
+						<img class="lb" src="proj3/IMG_5597.jpg" alt="Room Facing Down" />
+						<figcaption>Room Facing Down</figcaption>
 					</figure>
 					<figure>
-						<img class="lb" src="proj3/room_right.jpg" alt="Room right" />
-						<figcaption>Right</figcaption>
+						<img class="lb" src="proj3/IMG_5598.jpg" alt="Room Facing Up" />
+						<figcaption>Room Facing Up</figcaption>
 					</figure>
 					<figure>
-						<img class="lb" src="proj3/room_mosaic.jpg" alt="Room mosaic" />
-						<figcaption>Mosaic (feathered blend)</figcaption>
-					</figure>
-
-					<figure>
-						<img class="lb" src="proj3/roof_left.jpg" alt="Roof left" />
-						<figcaption>Left</figcaption>
-					</figure>
-					<figure>
-						<img class="lb" src="proj3/roof_right.jpg" alt="Roof right" />
-						<figcaption>Right</figcaption>
-					</figure>
-					<figure>
-						<img class="lb" src="proj3/roof_mosaic.jpg" alt="Roof mosaic" />
-						<figcaption>Mosaic (feathered blend)</figcaption>
+						<img class="lb" src="proj3/mosaic_room_cropped.png" alt="Room mosaic" />
+						<figcaption>Room Mosaic</figcaption>
 					</figure>
 
 					<figure>
-						<img class="lb" src="proj3/bonus_left.jpg" alt="Third pair left (placeholder)" />
-						<figcaption>Left (placeholder)</figcaption>
+						<img class="lb" src="proj3/IMG_5599.jpg" alt="Roof left" />
+						<figcaption>Roof Left</figcaption>
 					</figure>
 					<figure>
-						<img class="lb" src="proj3/bonus_right.jpg" alt="Third pair right (placeholder)" />
-						<figcaption>Right (placeholder)</figcaption>
+						<img class="lb" src="proj3/IMG_5600.jpg" alt="Roof right" />
+						<figcaption>Roof Right</figcaption>
 					</figure>
 					<figure>
-						<img class="lb" src="proj3/bonus_mosaic.jpg" alt="Third mosaic (placeholder)" />
-						<figcaption>Mosaic (placeholder)</figcaption>
+						<img class="lb" src="proj3/mosaic_roof.png" alt="Roof mosaic" />
+						<figcaption>Roof Mosaic</figcaption>
+					</figure>
+
+					<figure>
+						<img class="lb" src="proj3/IMG_5608.jpg" alt="Third pair left (placeholder)" />
+						<figcaption>Courtyard Left</figcaption>
+					</figure>
+					<figure>
+						<img class="lb" src="proj3/IMG_5609.jpg" alt="Third pair right (placeholder)" />
+						<figcaption>Courtyard Right</figcaption>
+					</figure>
+					<figure>
+						<img class="lb" src="proj3/mosaic_physics.png" alt="Third mosaic (placeholder)" />
+						<figcaption>Courtyard Mosaic</figcaption>
 					</figure>
 				</div>
 			</section>
@@ -239,6 +253,28 @@
 				if (e.key === 'Escape') closeLightbox();
 			});
 		})();
+	</script>
+
+	<!-- Ensure KaTeX auto-render runs after DOM and scripts are ready -->
+	<script>
+	(function(){
+		function renderKatex() {
+			if (window.renderMathInElement) {
+				renderMathInElement(document.body, {
+					delimiters: [
+						{ left: '$$', right: '$$', display: true },
+						{ left: '$', right: '$', display: false }
+					],
+					throwOnError: false
+				});
+			}
+		}
+		if (document.readyState === 'loading') {
+			document.addEventListener('DOMContentLoaded', renderKatex);
+		} else {
+			renderKatex();
+		}
+	})();
 	</script>
 </body>
 </html>
