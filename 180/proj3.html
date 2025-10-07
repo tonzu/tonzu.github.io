@@ -60,13 +60,18 @@
             border: 1px solid #e5e7eb;
             border-radius: 0.5rem;
             padding: 1rem;
-            overflow-x: auto;
+			overflow-x: auto;
             font-size: 0.875rem;
             margin-bottom: 1.5rem;
         }
         code {
             font-family: 'Courier New', monospace;
         }
+
+		/* Auto-scale wrappers for wide content (code/KaTeX) */
+		.scale-wrap { position: relative; width: 100%; overflow: hidden; }
+		/* When scaled, allow content to render without its own scrollbars */
+		.scaled { overflow: visible !important; }
 	</style>
 </head>
 <body>
@@ -134,8 +139,8 @@
                             <h3>Recovered homography for the shown pair</h3>
             
                             <pre id="homography-matrix"><code> array([[ 7.13986118e-01, -5.96434567e-01,  2.81016189e+02],
-                                                                    [-3.25037133e-03,  9.14168978e-02,  7.61972838e+02],
-                                                                    [-5.20929674e-06, -5.91647402e-04,  1.00000000e+00]]) </code></pre>
+[-3.25037133e-03,  9.14168978e-02,  7.61972838e+02],
+[-5.20929674e-06, -5.91647402e-04,  1.00000000e+00]]) </code></pre>
                         </div>
                     </div>
 					<div>
@@ -293,6 +298,58 @@
 
 	<!-- Ensure KaTeX auto-render runs after DOM and scripts are ready -->
 	<script>
+	// Fit-wide-content: scales code blocks (pre) and KaTeX displays to avoid horizontal scrolling
+	(function(){
+		function autoScaleAll(){
+			const targets = document.querySelectorAll('pre, .katex-display');
+			targets.forEach((el) => {
+				// Ensure each target is wrapped so we can control layout height
+				let wrap = el.parentElement;
+				if (!wrap || !wrap.classList.contains('scale-wrap')) {
+					wrap = document.createElement('div');
+					wrap.className = 'scale-wrap';
+					el.parentNode.insertBefore(wrap, el);
+					wrap.appendChild(el);
+				}
+				// Reset prior scaling to measure intrinsic sizes
+				el.style.transform = 'none';
+				el.style.transformOrigin = 'top left';
+				el.classList.remove('scaled');
+				wrap.style.height = 'auto';
+
+				// Measure and compute scale to fit width
+				const wrapWidth = wrap.clientWidth;
+				const contentWidth = el.scrollWidth; // width needed without wrapping
+				const scale = contentWidth > 0 ? Math.min(1, wrapWidth / contentWidth) : 1;
+
+				if (scale < 1) {
+					el.style.transform = `scale(${scale})`;
+					el.classList.add('scaled');
+					// Set wrapper height to match scaled content height
+					const h = el.offsetHeight * scale;
+					wrap.style.height = `${h}px`;
+				} else {
+					el.style.transform = 'none';
+					wrap.style.height = '';
+				}
+			});
+		}
+
+		// Expose and set up listeners
+		window.autoScaleAll = autoScaleAll;
+		let resizeTimer;
+		window.addEventListener('resize', () => {
+			clearTimeout(resizeTimer);
+			resizeTimer = setTimeout(autoScaleAll, 120);
+		});
+
+		// Run once DOM is ready; KaTeX re-call will occur after render as well
+		if (document.readyState === 'loading') {
+			document.addEventListener('DOMContentLoaded', autoScaleAll);
+		} else {
+			autoScaleAll();
+		}
+	})();
 	(function(){
 		function renderKatex() {
 			if (window.renderMathInElement) {
@@ -303,6 +360,11 @@
 					],
 					throwOnError: false
 				});
+				// After KaTeX renders, scale displays as needed
+				if (window.autoScaleAll) {
+					// Small timeout to allow layout to settle
+					setTimeout(window.autoScaleAll, 30);
+				}
 			}
 		}
 		if (document.readyState === 'loading') {
