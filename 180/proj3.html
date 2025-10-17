@@ -91,17 +91,17 @@
 		<aside class="toc">
 			<h3>Contents</h3>
 			<ul>
-				<li><a href="#a1">A.1 Pictures</a></li>
-				<li><a href="#a2">A.2 Recover Homographies</a></li>
-				<li><a href="#a3">A.3 Rectification (NN vs Bilinear)</a></li>
-				<li><a href="#a4">A.4 Mosaics (weighted blending)</a></li>
+				<li><a href="#a1">A.1 • Pictures</a></li>
+				<li><a href="#a2">A.2 • Recover Homographies</a></li>
+				<li><a href="#a3">A.3 • Rectification (NN vs Bilinear)</a></li>
+				<li><a href="#a4">A.4 • Mosaics (weighted blending)</a></li>
 				<li><span class="badge">Part B (later)</span></li>
 			</ul>
 		</aside>
 
 		<main>
 			<section id="a1">
-				<h2>A.1 Two pairs of images with a camera rotation</h2>
+				<h2>A.1 • Two pairs of images with a camera rotation</h2>
 				<div class="grid cols-2">
 					<figure>
 						<img class="lb" src="proj3/IMG_5597.jpg" alt="Room Facing Down" />
@@ -123,7 +123,7 @@
 			</section>
 
 			<section id="a2">
-				<h2>A.2 Matches, equations, and homography</h2>
+				<h2>A.2 • Matches, equations, and homography</h2>
 				<div class="grid cols-2">
                     <div>   
                         <figure>
@@ -158,7 +158,7 @@
 			</section>
 
 			<section id="a3">
-				<h2>A.3 Rectification: Nearest-Neighbors vs Bilinear</h2>
+				<h2>A.3 • Rectification: Nearest-Neighbors vs Bilinear</h2>
 				<p>We apply inverse homography to the original images to obtain rectified views. The NN interpolation tends to produce jagged artifacts, while bilinear interpolation results in smoother images, although it takes longer to compute.</p>
 				<div class="grid cols-3">
 					<figure>
@@ -190,7 +190,7 @@
 			</section>
 
 			<section id="a4">
-				<h2>A.4 Mosaics (weighted averaging)</h2>
+				<h2>A.4 • Mosaics (weighted averaging)</h2>
 				<p>The procedure involves first aligning the images by manually selecting keypoints and computing the homographies. Then, we inverse warp one image into the coordinate space of the other and blend them by converting binary masks to soft masks through feathering.</p>
 				<div class="grid cols-3">
 					<figure>
@@ -233,6 +233,86 @@
 					</figure>
 				</div>
 			</section>
+
+			<section id="b1">
+				<h2>B.1 • Harris Corner Detection + ANMS</h2>
+				<p>Details for Part B will be added later.</p>
+				<div class="grid cols-2">
+					<figure>
+						<img class="lb" src="proj3/harris_5600_all_overlay.png" alt="Harris corners (N=3285)" />
+						<figcaption>Harris corners (N=3285)</figcaption>
+					</figure>
+					<figure>
+						<img class="lb" src="proj3/harris_5600_anms_overlay.png" alt="Harris + ANMS (N=500)" />
+						<figcaption>Harris + ANMS (N=500)</figcaption>
+					</figure>
+				</div>
+			</section>
+
+			<section id="b2">
+				<h2>B.2 • Feature Descriptor Extraction</h2>
+				<p>Details for Part B will be added later.</p>
+				<div class="grid cols-2">
+					<figure>
+						<img class="lb" src="proj3/desc_5600_positions.png" alt="Feature descriptor positions" />
+						<figcaption>Feature descriptor positions</figcaption>
+					</figure>
+					<figure>
+						<img class="lb" src="proj3/desc_5600_montage.png" alt="Feature descriptor montage" />
+						<figcaption>Feature descriptor montage</figcaption>
+					</figure>
+			</section>
+
+			<section id="b3">
+				<h2>B.3 • Feature Matching</h2>
+				<p>Details for Part B will be added later.</p>
+				<div class="grid cols-1">
+					<figure>
+						<img class="lb" src="proj3/B3_matches.png" alt="Feature matches between roof image pair" />
+						<figcaption>Feature matches between roof image pair</figcaption>
+					</figure>
+				</div>
+			</section>
+
+			<section id="b4">
+				<h2>B.4 • RANSAC for Robust Homography + Automatic Mosaics</h2>
+				<p>Details for Part B will be added later.</p>
+				<div class="grid cols-1">
+					<figure>
+						<img class="lb" src="proj3/ransac_inliers.png" alt="RANSAC inliers for roof image pair" />
+						<figcaption>RANSAC inliers for roof image pair</figcaption>
+					</figure>
+				</div>
+				<div class="grid cols-2">
+					<figure>
+						<img class="lb" src="proj3/mosaic_roof.png" alt="Roof manual mosaic" />
+						<figcaption>Roof manual mosaic</figcaption>
+					</figure>
+					<figure>
+						<img class="lb" src="proj3/roof_auto_mosaic.png" alt="Roof automatic mosaic" />
+						<figcaption>Roof automatic mosaic</figcaption>
+					</figure>
+
+					<figure>
+						<img class="lb" src="proj3/mosaic_room.png" alt="Room manual mosaic" />
+						<figcaption>Room manual mosaic</figcaption>
+					</figure>
+					<figure>
+						<img class="lb" src="proj3/room_auto_mosaic.png" alt="Room automatic mosaic" />
+						<figcaption>Room automatic mosaic</figcaption>
+					</figure>
+
+					<figure>
+						<img class="lb" src="proj3/mosaic_physics.png" alt="Physics manual mosaic" />
+						<figcaption>Physics manual mosaic</figcaption>
+					</figure>
+					<figure>
+						<img class="lb" src="proj3/physics_auto_mosaic.png" alt="Physics automatic mosaic" />
+						<figcaption>Physics automatic mosaic</figcaption>
+					</figure>
+				</div>
+			</section>
+
             <!-- Navigation -->
             <div class="navigation">
                 <a href="index.html" class="nav-button">
