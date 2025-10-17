@@ -239,11 +239,15 @@
 
 			<section id="b1">
 				<h2>B.1 • Harris Corner Detection + ANMS</h2>
-				<p>Details for Part B will be added later.</p>
-				<div class="grid cols-2">
+				<p>Harris corners are detected (single-scale) and then Adaptive Non-Maximal Suppression (ANMS) is applied to select a subset of spatially well-distributed corners. Notice that in the Harris + AMNS results, the corners are more uniformly distributed across the image as opposed to the strongest 500 Harris corners.</p>
+				<div class="grid cols-3">
 					<figure>
 						<img class="lb" src="proj3/harris_5600_all_overlay.png" alt="Harris corners (N=3285)" />
 						<figcaption>Harris corners (N=3285)</figcaption>
+					</figure>
+					<figure>
+						<img class="lb" src="proj3/harris_5600_top_overlay.png" alt="Harris + Top (N=500)" />
+						<figcaption>Harris strongest corners (N=500)</figcaption>
 					</figure>
 					<figure>
 						<img class="lb" src="proj3/harris_5600_anms_overlay.png" alt="Harris + ANMS (N=500)" />
@@ -254,7 +258,7 @@
 
 			<section id="b2">
 				<h2>B.2 • Feature Descriptor Extraction</h2>
-				<p>Details for Part B will be added later.</p>
+				<p>From the ANMS corners, I took a sample of them and extracted feature descriptors using a patch around each corner, downsampling to 8x8 pixels, and normalizing.</p>
 				<div class="grid cols-2">
 					<figure>
 						<img class="lb" src="proj3/desc_5600_positions.png" alt="Feature descriptor positions" />
@@ -268,7 +272,7 @@
 
 			<section id="b3">
 				<h2>B.3 • Feature Matching</h2>
-				<p>Details for Part B will be added later.</p>
+				<p>Feature matches were chosen using Lowe's ratio test by first computing the distances between each descriptor and all other descriptors, then keeping only the best match for each descriptor based on the ratio of the best match to the second-best match.</p>
 				<div class="grid cols-1">
 					<figure>
 						<img class="lb" src="proj3/B3_matches.png" alt="Feature matches between roof image pair" />
@@ -279,7 +283,7 @@
 
 			<section id="b4">
 				<h2>B.4 • RANSAC for Robust Homography + Automatic Mosaics</h2>
-				<p>Details for Part B will be added later.</p>
+				<p>RANSAC was used to estimate a robust homography between the image pairs, allowing for the alignment of the images despite the presence of outliers. In the first image, you can see the inliers (green) and outliers (red) after applying RANSAC. Comparing the manual and automatic mosaics reveals the effectiveness of the alignment process. In the manual mosaics, misalignments are more pronounced, which are noticeable when you look at the trees at the intersections. </p>
 				<div class="grid cols-1">
 					<figure>
 						<img class="lb" src="proj3/ransac_inliers.png" alt="RANSAC inliers for roof image pair" />
@@ -297,21 +301,21 @@
 					</figure>
 
 					<figure>
-						<img class="lb" src="proj3/mosaic_room.png" alt="Room manual mosaic" />
+						<img class="lb" src="proj3/mosaic_room_cropped.png" alt="Room manual mosaic" />
 						<figcaption>Room manual mosaic</figcaption>
 					</figure>
 					<figure>
-						<img class="lb" src="proj3/room_auto_mosaic.png" alt="Room automatic mosaic" />
+						<img class="lb" src="proj3/room_auto_mosaic_cropped.png" alt="Room automatic mosaic" />
 						<figcaption>Room automatic mosaic</figcaption>
 					</figure>
 
 					<figure>
 						<img class="lb" src="proj3/mosaic_physics.png" alt="Physics manual mosaic" />
-						<figcaption>Physics manual mosaic</figcaption>
+						<figcaption>Courtyard manual mosaic</figcaption>
 					</figure>
 					<figure>
 						<img class="lb" src="proj3/physics_auto_mosaic.png" alt="Physics automatic mosaic" />
-						<figcaption>Physics automatic mosaic</figcaption>
+						<figcaption>Courtyard automatic mosaic</figcaption>
 					</figure>
 				</div>
 			</section>
