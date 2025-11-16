@@ -1,0 +1,13 @@
+{
+  "image_path": "proj4/fox.jpg",
+  "out_dir": "proj4/part1_outputs",
+  "width": 256,
+  "depth": 3,
+  "pe_freqs": 10,
+  "lr": 0.01,
+  "batch_size": 10000,
+  "iters": 2000,
+  "log_every": 200,
+  "device": "mps",
+  "seed": 42
+}

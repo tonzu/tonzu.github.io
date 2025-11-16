@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Project 4: Neural Radiance Fields (NeRF) | CS180</title>
+	<link rel="stylesheet" href="styles.css" />
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+	<style>
+		/* Lightweight additions to complement styles.css */
+		* { box-sizing: border-box; }
+		body { max-width: 1200px; margin: 5% auto; }
+		header.page-header { padding: 1.25rem 0; border-bottom: 1px solid #e5e7eb; }
+		.nav-bar { display:flex; gap:.5rem; align-items:center; margin:.5rem 0 1rem; }
+		.nav-bar a { padding:.35rem .6rem; border:1px solid #e5e7eb; border-radius:6px; text-decoration:none; color:#111; background:#fafafa; }
+		.layout { display:grid; grid-template-columns: 240px 1fr; gap: 1.25rem; }
+		@media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
+		aside.toc { position: sticky; top: 0.75rem; align-self: start; border:1px solid #e5e7eb; border-radius:10px; padding:0.75rem; background:#fff; }
+		aside.toc h3 { margin-top:0; font-size:1rem; }
+		aside.toc ul { list-style:none; padding-left:0; margin:0; }
+		aside.toc li { margin:.35rem 0; }
+		main section { margin-bottom: 2.25rem; }
+		h2 { border-bottom: 1px solid #e5e7eb; padding-bottom:.25rem; }
+		.grid { display:grid; gap: .75rem; }
+		.grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+		.grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+		.grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+		/* Responsive breakpoints so grids resize instead of overflowing */
+		@media (max-width: 900px) {
+			.grid.cols-4 { grid-template-columns: repeat(2, 1fr); }
+			.grid.cols-3 { grid-template-columns: repeat(2, 1fr); }
+		}
+		@media (max-width: 600px) {
+			.grid.cols-4,
+			.grid.cols-3,
+			.grid.cols-2 { grid-template-columns: 1fr; }
+		}
+		figure { margin:0; }
+		figure img { width: 100%; height: auto; border-radius: 8px; cursor: zoom-in; box-shadow: 0 1px 3px rgba(0,0,0,.12); display:block; object-fit: contain; }
+		figure video { width: 100%; height: auto; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,.12); display:block; }
+		figure figcaption { font-size: .9rem; color: #555; margin-top: .35rem; }
+		/* Lightbox / modal */
+		.lightbox-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.8); display:none; align-items:center; justify-content:center; z-index: 1000; padding: 2vh 2vw; overflow:auto; }
+		.lightbox-overlay.open { display:flex; }
+		.lightbox-content { position:relative; max-width: 100%; max-height: 100%; }
+		.lightbox-content img { display:block; max-width: min(96vw, 1400px); max-height: 96vh; width:auto; height:auto; object-fit: contain; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,.35); cursor: zoom-out; }
+		.lightbox-close { position:absolute; top:.75rem; right:.75rem; background: rgba(255,255,255,.95); border:none; border-radius:999px; width:36px; height:36px; cursor:pointer; font-size:18px; box-shadow: 0 2px 6px rgba(0,0,0,.25); }
+		.badge { display:inline-block; font-size:.8rem; padding:.15rem .4rem; border:1px solid #e5e7eb; border-radius:6px; background:#fafafa; }
+		pre {
+			background: #f3f4f6;
+			border: 1px solid #e5e7eb;
+			border-radius: 0.5rem;
+			padding: 1rem;
+			overflow-x: auto;
+			font-size: 0.875rem;
+			margin-bottom: 1.5rem;
+		}
+		code {
+			font-family: 'Courier New', monospace;
+		}
+		.model-specs {
+			background: #f9fafb;
+			border: 1px solid #e5e7eb;
+			border-radius: 0.5rem;
+			padding: 1rem;
+			margin: 1rem 0;
+		}
+		.model-specs h4 {
+			margin-top: 0;
+			margin-bottom: 0.5rem;
+			font-size: 1rem;
+		}
+		.model-specs ul {
+			margin: 0;
+			padding-left: 1.5rem;
+		}
+		.model-specs li {
+			margin: 0.25rem 0;
+		}
+	</style>
+</head>
+<body>
+	<header>
+		<div class="container">
+			<div class="header-content">
+				<a href="index.html" class="back-button" aria-label="Back to portfolio">
+					<i class="fas fa-arrow-left"></i>
+				</a>
+				<div class="header-info">
+					<div class="project-icon"><i class="fas fa-cube"></i></div>
+					<div>
+						<h1 class="project-title">Project 4: Neural Radiance Fields (NeRF)</h1>
+						<p class="project-course">CS180 • Fall 2025</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+
+	<div class="layout">
+		<aside class="toc">
+			<h3>Contents</h3>
+			<ul>
+				<li><a href="#part0">Part 0 • Camera Calibration</a></li>
+				<li><a href="#part1">Part 1 • Neural Field (2D)</a></li>
+				<li><a href="#part2">Part 2 • NeRF (Multi-view)</a></li>
+				<li><a href="#part2-6">Part 2.6 • Own Data</a></li>
+			</ul>
+		</aside>
+
+		<main>
+			<section id="part0">
+				<h2>Part 0: Camera Calibration and 3D Scanning</h2>
+				<p>
+					Using ArUco markers and OpenCV's <code>solvePnP</code>, I calibrated my iPhone camera and estimated 
+					camera poses for multiple images. The frustums visualization in Viser shows the recovered camera positions 
+					and orientations in 3D space. Transformations were made to ensure a right-handed coordinate system 
+                    with Y up, consistent with NeRF conventions.
+				</p>
+				<div class="grid cols-2">
+					<figure>
+						<img class="lb" src="4/part0_outputs/camera1.png" alt="Viser frustums view 1" />
+						<figcaption>Viser Frustums Visualization (View 1)</figcaption>
+					</figure>
+					<figure>
+						<img class="lb" src="4/part0_outputs/camera2.png" alt="Viser frustums view 2" />
+						<figcaption>Viser Frustums Visualization (View 2)</figcaption>
+					</figure>
+				</div>
+				<p>
+					<strong>Implementation notes:</strong> Camera calibration follows the standard pinhole model. 
+					I used <code>cv2.calibrateCamera</code> with checkerboard patterns to obtain intrinsics (focal length, principal point) 
+					and distortion coefficients. For pose estimation, <code>cv2.solvePnP</code> with the <code>IPPE_SQUARE</code> flag 
+					provided robust results for planar ArUco markers. 
+				</p>
+			</section>
+
+			<section id="part1">
+				<h2>Part 1: Fit a Neural Field to a 2D Image</h2>
+				<p>
+					A neural field is a multi-layer perceptron (MLP) that maps 2D pixel coordinates to RGB color values. 
+					By applying sinusoidal positional encoding to the input coordinates, the network can learn high-frequency 
+					details. This section explores how varying the encoding frequency (<code>L</code>) and network width 
+					(<code>hidden_dim</code>) affects reconstruction quality, measured by Peak Signal-to-Noise Ratio (PSNR).
+				</p>
+
+				<div class="model-specs">
+					<h4>Model Architecture & Hyperparameters</h4>
+					<ul>
+						<li><strong>Layers:</strong> 4 fully connected layers (including output layer)</li>
+						<li><strong>Width (hidden_dim):</strong> Tested with 64 and 256</li>
+						<li><strong>Activation:</strong> ReLU for hidden layers, Sigmoid for output</li>
+						<li><strong>Positional Encoding Frequencies (L):</strong> Tested with 4, 10</li>
+						<li><strong>Learning Rate:</strong> 1e-3 (Adam optimizer)</li>
+						<li><strong>Training Steps:</strong> 2000</li>
+						<li><strong>Batch Size:</strong> Full image (all pixels per step)</li>
+					</ul>
+				</div>
+
+				<h3>Training Progression on Test Image (Fox)</h3>
+				<p>
+					The fox image from the provided dataset shows clear progression from blurry initialization to sharp reconstruction. 
+					Higher positional encoding frequencies capture finer texture details.
+				</p>
+				<div class="grid cols-4">
+					<figure>
+						<img class="lb" src="proj4/part1_outputs/fox/w256_L10_d3/renders/iter_0001.png" alt="Fox step 1" />
+						<figcaption>Step 1</figcaption>
+					</figure>
+					<figure>
+						<img class="lb" src="proj4/part1_outputs/fox/w256_L10_d3/renders/iter_0600.png" alt="Fox step 600" />
+						<figcaption>Step 600</figcaption>
+					</figure>
+					<figure>
+						<img class="lb" src="proj4/part1_outputs/fox/w256_L10_d3/renders/iter_1200.png" alt="Fox step 1200" />
+						<figcaption>Step 1200</figcaption>
+					</figure>
+					<figure>
+						<img class="lb" src="proj4/part1_outputs/fox/w256_L10_d3/renders/iter_2000.png" alt="Fox step 2000" />
+						<figcaption>Step 2000 (Final)</figcaption>
+					</figure>
+				</div>
+                
+                <h3>PSNR Curve (Fox, Width=256, L=10)</h3>
+				<figure>
+					<img class="lb" src="proj4/part1_outputs/fox/w256_L10_d3/psnr.png" alt="Fox PSNR curve" />
+					<figcaption>PSNR increases rapidly in the first 1000 steps, then plateaus as the network converges.</figcaption>
+				</figure>
+
+				<h3>Training Progression on Own Image (Self Portrait)</h3>
+				<p>
+					My own test image (a self-portrait) demonstrates similar convergence behavior with the same width and learning rate. The network gradually refines 
+					color boundaries and subtle gradients.
+				</p>
+				<div class="grid cols-4">
+					<figure>
+						<img class="lb" src="proj4/part1_outputs/self/w256_L10_d3/renders/iter_0001.png" alt="Self step 1" />
+						<figcaption>Step 1</figcaption>
+					</figure>
+					<figure>
+						<img class="lb" src="proj4/part1_outputs/self/w256_L10_d3/renders/iter_0600.png" alt="Self step 600" />
+						<figcaption>Step 600</figcaption>
+					</figure>
+					<figure>
+						<img class="lb" src="proj4/part1_outputs/self/w256_L10_d3/renders/iter_1200.png" alt="Self step 1200" />
+						<figcaption>Step 1200</figcaption>
+					</figure>
+					<figure>
+						<img class="lb" src="proj4/part1_outputs/self/w256_L10_d3/renders/iter_2000.png" alt="Self step 2000" />
+						<figcaption>Step 2000 (Final)</figcaption>
+					</figure>
+				</div>
+
+				<h3>Final Results: 2 Frequencies × 2 Widths (Fox)</h3>
+				<p>
+					Comparing different hyperparameters reveals the trade-off between model capacity and detail capture. 
+					Higher <code>L</code> and wider networks generally achieve better PSNR but require more computation.
+				</p>
+				<div class="grid cols-4">
+					<figure>
+						<img class="lb" src="proj4/part1_outputs/fox/w64_L4_d3/renders/iter_2000.png" alt="Fox w=64, L=4" />
+						<figcaption>Width=64, L=4<br/>PSNR: ~28 dB</figcaption>
+					</figure>
+					<figure>
+						<img class="lb" src="proj4/part1_outputs/fox/w256_L4_d3/renders/iter_2000.png" alt="Fox w=256, L=4" />
+						<figcaption>Width=256, L=4<br/>PSNR: ~30 dB</figcaption>
+					</figure>
+					<figure>
+						<img class="lb" src="proj4/part1_outputs/fox/w64_L10_d3/renders/iter_2000.png" alt="Fox w=64, L=10" />
+						<figcaption>Width=64, L=10<br/>PSNR: ~32 dB</figcaption>
+					</figure>
+					<figure>
+						<img class="lb" src="proj4/part1_outputs/fox/w256_L10_d3/renders/iter_2000.png" alt="Fox w=256, L=10" />
+						<figcaption>Width=256, L=10<br/>PSNR: ~35 dB</figcaption>
+					</figure>
+				</div>
+
+				
+			</section>
+
+			<section id="part2">
+				<h2>Part 2: Fit a Neural Radiance Field from Multi-view Images</h2>
+				<p>
+					A Neural Radiance Field (NeRF) extends the 2D neural field concept to 3D. Given a set of images with known 
+					camera poses, NeRF learns a continuous 5D function that maps 3D position <strong>(x, y, z)</strong> and 
+					viewing direction <strong>(θ, φ)</strong> to volume density <strong>σ</strong> and color <strong>(r, g, b)</strong>. 
+					Novel views are synthesized by marching rays through the scene and integrating color using classical volume rendering.
+				</p>
+
+				<div class="model-specs">
+					<h4>NeRF Model Architecture</h4>
+					<ul>
+						<li><strong>Layers:</strong> 8 fully connected layers with skip connection at layer 4</li>
+						<li><strong>Hidden Dimension:</strong> 256</li>
+						<li><strong>Position Encoding:</strong> L=10 frequencies (xyz → 63-dim)</li>
+						<li><strong>Direction Encoding:</strong> L=4 frequencies (view dirs → 27-dim)</li>
+						<li><strong>Activation:</strong> ReLU throughout, Sigmoid for RGB output</li>
+						<li><strong>Ray Samples:</strong> 64 samples per ray (stratified)</li>
+						<li><strong>Near/Far Bounds:</strong> 2.0 to 6.0 (scene-dependent)</li>
+						<li><strong>Learning Rate:</strong> 5e-4 (Adam)</li>
+						<li><strong>Batch Size:</strong> ~10,000 rays per step</li>
+						<li><strong>Training Steps:</strong> 1,000–20,000</li>
+					</ul>
+				</div>
+
+				<h3>Implementation Overview</h3>
+				<p>
+					<strong>Ray Sampling:</strong> I generated rays by back-projecting 
+					pixel coordinates through camera intrinsics and transforming by the camera-to-world matrix (analogous to 
+					applying a homography in Project 3). Each ray is parameterized by origin <code>o</code> and direction <code>d</code>.
+				</p>
+				<p>
+					<strong>Volume Rendering:</strong> For each ray, I sample 64 points along the ray and query the NeRF MLP 
+					to get density <code>σ</code> and RGB at each point. The final pixel color is computed via numerical integration 
+					using the transmittance and alpha compositing formulas from classical volume rendering.
+				</p>
+				<p>
+					<strong>Training:</strong> Random rays are sampled from the training images, and the predicted colors are 
+					compared to ground truth using MSE loss. The network learns to minimize this loss, gradually discovering 
+					the 3D structure and appearance of the scene.
+				</p>
+
+				<h3>Visualization: Rays and Samples with Cameras</h3>
+				<p>
+					The following images show 100 randomly sampled rays (blue lines) emanating from camera frustums (white wireframes). 
+					Dots represent sample points along each ray where the NeRF is evaluated. This visualization was created using Viser, 
+					similar to the camera frustums in Part 0.
+				</p>
+				<div class="grid cols-3">
+					<figure>
+						<img class="lb" src="proj4/231.png" alt="Rays visualization 1" />
+						<figcaption>One random ray from each camera with sampled points</figcaption>
+					</figure>
+					<figure>
+						<img class="lb" src="proj4/232.png" alt="Rays visualization 2" />
+						<figcaption>100 random rays from one camera with sampled points</figcaption>
+					</figure>
+                    <figure>
+						<img class="lb" src="proj4/233.png" alt="Rays visualization 2" />
+						<figcaption>100 random rays from the top left corner of one image with sampled points</figcaption>
+					</figure>
+				</div>
+
+				<h3>Training Progression on Lego Dataset</h3>
+				<p>
+					The Lego dataset consists of 100 training images of a toy bulldozer. Below are validation renders at different 
+					training iterations, showing the NeRF progressively learning geometry and fine texture details.
+				</p>
+				<div class="grid cols-4">
+					<figure>
+						<img class="lb" src="proj4/part2_outputs/25/val_step_00100.png" alt="Lego step 100" />
+						<figcaption>Step 100</figcaption>
+					</figure>
+					<figure>
+						<img class="lb" src="proj4/part2_outputs/25/val_step_00500.png" alt="Lego step 500" />
+						<figcaption>Step 500</figcaption>
+					</figure>
+					<figure>
+						<img class="lb" src="proj4/part2_outputs/25/val_step_00900 (1).png" alt="Lego step 900" />
+						<figcaption>Step 900</figcaption>
+					</figure>
+					<figure>
+						<img class="lb" src="proj4/part2_outputs/25/val_step_01500.png" alt="Lego step 1500" />
+						<figcaption>Step 1500 (Final)</figcaption>
+					</figure>
+				</div>
+
+				<h3>PSNR Curve on Validation Set</h3>
+				<figure>
+					<img class="lb" src="proj4/part2_outputs/25/psnr.png" alt="Validation PSNR curve" />
+					<figcaption>
+						Validation PSNR steadily improves over 1,500 steps, reaching ~25 dB. The curve plateaus 
+						as the model converges to the optimal representation.
+					</figcaption>
+				</figure>
+
+				<h3>Spherical Rendering Video</h3>
+				<p>
+					Using the provided test cameras (60 frames in a circular orbit), I rendered a 360° video of the Lego scene. 
+					This demonstrates NeRF's ability to synthesize entirely novel viewpoints not seen during training.
+				</p>
+				<figure>
+					<img class="lb" src="proj4/part2_outputs/25/lego_sphere.gif" alt="Spherical rendering of Lego scene" />
+					<figcaption>Spherical rendering of Lego scene (novel views)</figcaption>
+				</figure>
+			</section>
+
+			<section id="part2-6">
+				<h2>Part 2.6: Training with Your Own Data</h2>
+				<p>
+					I captured my own multi-view dataset using the camera calibration setup from Part 0. The object is a small 
+					figurine photographed from multiple angles with consistent lighting. After running the same NeRF pipeline, 
+					I generated a circular orbit video showing novel views of my custom scene.
+				</p>
+
+				<h3>Novel View Synthesis (Camera Orbiting Object)</h3>
+				<figure>
+					<video class="lb" controls>
+						<source src="proj4/part04/orbit_render.mp4" type="video/mp4">
+						Your browser does not support the video tag.
+					</video>
+					<figcaption>
+						GIF/video of camera circling my captured object. The NeRF successfully reconstructs 3D geometry 
+						and synthesizes smooth novel views despite limited training images.
+					</figcaption>
+				</figure>
+
+				<h3>Code and Hyperparameter Changes</h3>
+				<p>
+					To adapt the NeRF pipeline to my own data, I made the following modifications:
+				</p>
+				<ul>
+					<li>
+						<strong>Data Loading:</strong> Integrated the camera poses from Part 0's calibration output. 
+						Used the <code>nerf_dataset_part0.npz</code> format (images, c2ws, intrinsics).
+					</li>
+					<li>
+						<strong>Near/Far Bounds:</strong> Adjusted based on the physical scale of my scene. Used 
+						<code>near=1.5</code> and <code>far=4.0</code> instead of the Lego defaults.
+					</li>
+					<li>
+						<strong>Training Steps:</strong> Increased to 15,000 steps due to more complex lighting and texture.
+					</li>
+					<li>
+						<strong>Learning Rate Decay:</strong> Added exponential decay (gamma=0.9995) to stabilize late-stage training.
+					</li>
+					<li>
+						<strong>Background Handling:</strong> My dataset has non-white background, so I disabled background 
+						color loss and relied on density to handle it naturally.
+					</li>
+				</ul>
+
+				<h3>Training Loss Over Iterations</h3>
+				<figure>
+					<img class="lb" src="proj4/part04/plots/train_loss.png" alt="Training loss curve" />
+					<figcaption>
+						Training loss (MSE) decreases rapidly in the first 2000 steps, then converges smoothly. 
+						The curve shows no signs of overfitting, indicating good generalization to novel views.
+					</figcaption>
+				</figure>
+
+				<h3>Intermediate Renders During Training</h3>
+				<p>
+					Below are validation renders at different training stages, showing the gradual emergence of 3D structure 
+					and texture from the initially noisy output.
+				</p>
+				<div class="grid cols-4">
+					<figure>
+						<img class="lb" src="proj4/part04/progress/val_step_00500.png" alt="Own data step 500" />
+						<figcaption>Step 500</figcaption>
+					</figure>
+					<figure>
+						<img class="lb" src="proj4/part04/progress/val_step_02000.png" alt="Own data step 2000" />
+						<figcaption>Step 2000</figcaption>
+					</figure>
+					<figure>
+						<img class="lb" src="proj4/part04/progress/val_step_08000.png" alt="Own data step 8000" />
+						<figcaption>Step 8000</figcaption>
+					</figure>
+					<figure>
+						<img class="lb" src="proj4/part04/progress/val_step_15000.png" alt="Own data step 15000" />
+						<figcaption>Step 15000 (Final)</figcaption>
+					</figure>
+				</div>
+
+				<h3>Discussion</h3>
+				<p>
+					<strong>Challenges:</strong> The main difficulty was ensuring consistent lighting across all captured images. 
+					Shadows and specular highlights caused the NeRF to struggle with view-dependent effects. I mitigated this by 
+					increasing the direction encoding frequency (<code>L=6</code> instead of 4) and using more training steps.
+				</p>
+				<p>
+					<strong>Connection to Previous Projects:</strong> This project ties together concepts from earlier assignments. 
+					Part 0's camera calibration builds on Project 1's image alignment (using feature correspondences to establish 
+					geometric relationships). The frequency-domain thinking from Project 2's Gaussian filters reappears in positional 
+					encoding frequencies. Project 3's homographies are generalized here to full 3D camera transformations (c2w matrices).
+				</p>
+				<p>
+					<strong>Future Improvements:</strong> To improve quality, I could capture more images with better lighting control, 
+					or incorporate more advanced NeRF variants like Instant-NGP for faster training and sharper details.
+				</p>
+			</section>
+
+			<!-- Navigation -->
+			<div class="navigation">
+				<a href="index.html" class="nav-button">
+					<i class="fas fa-arrow-left"></i>
+					Back to Portfolio
+				</a>
+				
+				<div class="project-counter">
+					Project 4 of 5
+				</div>
+			</div>
+		</main>
+	</div>
+
+	<!-- Lightbox modal root -->
+	<div id="lightbox" class="lightbox-overlay" aria-hidden="true">
+		<div class="lightbox-content" role="dialog" aria-modal="true" aria-label="Image preview">
+			<button class="lightbox-close" aria-label="Close">&times;</button>
+			<img id="lightbox-img" src="" alt="Expanded image" />
+		</div>
+	</div>
+
+	<script>
+		// Simple lightbox: click .lb images to open; click outside, close button, or ESC to dismiss
+		(function(){
+			const overlay = document.getElementById('lightbox');
+			const imgEl = document.getElementById('lightbox-img');
+			const closeBtn = overlay.querySelector('.lightbox-close');
+
+			function openLightbox(src) {
+				imgEl.src = src;
+				overlay.classList.add('open');
+				overlay.setAttribute('aria-hidden', 'false');
+			}
+			function closeLightbox(){
+				overlay.classList.remove('open');
+				overlay.setAttribute('aria-hidden', 'true');
+				imgEl.src = '';
+			}
+
+			document.addEventListener('click', (e) => {
+				const t = e.target;
+				if (t && t.matches('img.lb')) {
+					e.preventDefault();
+					openLightbox(t.src);
+				}
+			});
+			overlay.addEventListener('click', (e) => {
+				if (e.target === overlay || e.target === closeBtn) closeLightbox();
+			});
+			document.addEventListener('keydown', (e) => {
+				if (e.key === 'Escape') closeLightbox();
+			});
+		})();
+	</script>
+</body>
+</html>
