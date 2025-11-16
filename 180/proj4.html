@@ -341,7 +341,7 @@
 					Using the provided test cameras (60 frames in a circular orbit), I rendered a 360° video of the Lego scene. 
 					This demonstrates NeRF's ability to synthesize entirely novel viewpoints not seen during training.
 				</p>
-				<figure>
+				<figure style="max-width: 70%; margin-left: auto; margin-right: auto;">
 					<img class="lb" src="4/part2_outputs/25/legosphere.gif" alt="Spherical rendering of Lego scene" />
 					<figcaption>Spherical rendering of Lego scene (novel views)</figcaption>
 				</figure>
@@ -351,25 +351,20 @@
 				<h2>Part 2.6: Training with Your Own Data</h2>
 				<p>
 					I captured my own multi-view dataset using the camera calibration setup from Part 0. The object is a small 
-					figurine photographed from multiple angles with consistent lighting. After running the same NeRF pipeline, 
-					I generated a circular orbit video showing novel views of my custom scene.
+					figurine photographed from multiple angles with consistent lighting. Unfortunately, after running the same NeRF pipeline I wasn't able to get good results, so I decided to try out the Lafufu dataset with the time I had left. 
 				</p>
 
 				<h3>Novel View Synthesis (Camera Orbiting Object)</h3>
 				<figure>
-					<video class="lb" controls>
-						<source src="4/part04/orbit_render.mp4" type="video/mp4">
-						Your browser does not support the video tag.
-					</video>
+					<img src="4/part2_outputs/26/orbit.gif" alt="Camera orbiting own object" />
 					<figcaption>
-						GIF/video of camera circling my captured object. The NeRF successfully reconstructs 3D geometry 
-						and synthesizes smooth novel views despite limited training images.
+						This GIF is meant to show the camera orbiting around the Lafufu, but the quality is quite low due to limited training time and a lack of hyperparameter tuning. I honestly don't know where all the blue is coming from. 
 					</figcaption>
 				</figure>
 
 				<h3>Code and Hyperparameter Changes</h3>
 				<p>
-					To adapt the NeRF pipeline to my own data, I made the following modifications:
+					In my attempt to adapt the NeRF pipeline to my own data, I made the following modifications (These same modifications apply to the Lafufu dataset):
 				</p>
 				<ul>
 					<li>
@@ -378,13 +373,10 @@
 					</li>
 					<li>
 						<strong>Near/Far Bounds:</strong> Adjusted based on the physical scale of my scene. Used 
-						<code>near=1.5</code> and <code>far=4.0</code> instead of the Lego defaults.
+						<code>near=0.5</code> and <code>far=2.5</code> instead of the Lego defaults.
 					</li>
 					<li>
-						<strong>Training Steps:</strong> Increased to 15,000 steps due to more complex lighting and texture.
-					</li>
-					<li>
-						<strong>Learning Rate Decay:</strong> Added exponential decay (gamma=0.9995) to stabilize late-stage training.
+						<strong>Training Steps:</strong> Increased to 10,000 steps due to the complexity of real-world data.
 					</li>
 					<li>
 						<strong>Background Handling:</strong> My dataset has non-white background, so I disabled background 
@@ -392,36 +384,40 @@
 					</li>
 				</ul>
 
-				<h3>Training Loss Over Iterations</h3>
-				<figure>
-					<img class="lb" src="4/part04/plots/train_loss.png" alt="Training loss curve" />
-					<figcaption>
-						Training loss (MSE) decreases rapidly in the first 2000 steps, then converges smoothly. 
-						The curve shows no signs of overfitting, indicating good generalization to novel views.
-					</figcaption>
-				</figure>
+				<h3>PSNR Curve on Validation and Training Loss Over Iterations</h3>
+                <div class="grid cols-2">
+					<figure>
+						<img class="lb" src="4/part2_outputs/26/psnr.png" alt="PSNR curve" />
+						<figcaption>PSNR Curve on Validation</figcaption>
+					</figure>
+					<figure>
+						<img class="lb" src="4/part2_outputs/26/train_loss.png" alt="Training loss curve" />
+						<figcaption>Training Loss Over Iterations</figcaption>
+					</figure>
+				</div>
+                <p> The PSNR curve shows rapid inital improvement, but after 1000 iterations the improvement starts to decay. The training loss decreases steadily, indicating the model is learning, but may be overfitting and require more data or tuning for better results.</p>
 
 				<h3>Intermediate Renders During Training</h3>
 				<p>
 					Below are validation renders at different training stages, showing the gradual emergence of 3D structure 
-					and texture from the initially noisy output.
+					and texture from the initially noisy output. Mirroring the results of the PSNR curve, the 2,000 step output is the best one.
 				</p>
 				<div class="grid cols-4">
 					<figure>
-						<img class="lb" src="4/part04/progress/val_step_00500.png" alt="Own data step 500" />
+						<img class="lb" src="4/part2_outputs/26/val_step_00500.png" alt="Own data step 500" />
 						<figcaption>Step 500</figcaption>
 					</figure>
 					<figure>
-						<img class="lb" src="4/part04/progress/val_step_02000.png" alt="Own data step 2000" />
+						<img class="lb" src="4/part2_outputs/26/val_step_02000.png" alt="Own data step 2000" />
 						<figcaption>Step 2000</figcaption>
 					</figure>
 					<figure>
-						<img class="lb" src="4/part04/progress/val_step_08000.png" alt="Own data step 8000" />
+						<img class="lb" src="4/part2_outputs/26/val_step_08000.png" alt="Own data step 8000" />
 						<figcaption>Step 8000</figcaption>
 					</figure>
 					<figure>
-						<img class="lb" src="4/part04/progress/val_step_15000.png" alt="Own data step 15000" />
-						<figcaption>Step 15000 (Final)</figcaption>
+						<img class="lb" src="4/part2_outputs/26/val_step_10000.png" alt="Own data step 10000" />
+						<figcaption>Step 10000 (Final)</figcaption>
 					</figure>
 				</div>
 
@@ -432,14 +428,8 @@
 					increasing the direction encoding frequency (<code>L=6</code> instead of 4) and using more training steps.
 				</p>
 				<p>
-					<strong>Connection to Previous Projects:</strong> This project ties together concepts from earlier assignments. 
-					Part 0's camera calibration builds on Project 1's image alignment (using feature correspondences to establish 
-					geometric relationships). The frequency-domain thinking from Project 2's Gaussian filters reappears in positional 
-					encoding frequencies. Project 3's homographies are generalized here to full 3D camera transformations (c2w matrices).
-				</p>
-				<p>
 					<strong>Future Improvements:</strong> To improve quality, I could capture more images with better lighting control, 
-					or incorporate more advanced NeRF variants like Instant-NGP for faster training and sharper details.
+					or incorporate more advanced NeRF variants like Instant-NGP for faster training and sharper details. If time permitted, I would have liked to experiment with hyperparameter tunning, such as increasing the number of sampled rays per batch or adjusting the learning rate schedule.
 				</p>
 			</section>
 
